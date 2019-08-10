@@ -31,15 +31,22 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'erichdongubler/vim-sublime-monokai'
 Plug 'scrooloose/nerdtree'
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
 
 call plug#end()
 " }}}
 " Plugin Configurations {{{
-
 " Sublime monokai
 syntax on 
 colorscheme sublimemonokai
 
+" --------------------------------------------------------------------------------
 " Nerdtree
 " open on startup
 autocmd vimenter * NERDTree 
@@ -51,4 +58,12 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 " open using Ctrl+n
 map <C-n> :NERDTreeToggle<CR>  
 
+" --------------------------------------------------------------------------------
+" Deoplete autocomplete
+let g:deoplete#enable_at_startup = 1
+
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+
+" --------------------------------------------------------------------------------
 " }}}
