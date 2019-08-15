@@ -36,7 +36,7 @@ ZSH_THEME="robbyrussell"
 # DISABLE_MAGIC_FUNCTIONS=true
 
 # Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
+DISABLE_LS_COLORS="true"
 
 # Uncomment the following line to disable auto-setting terminal title.
 # DISABLE_AUTO_TITLE="true"
@@ -76,6 +76,9 @@ source $ZSH/oh-my-zsh.sh
 #}}}
 # User configuration {{{
 
+#user @ hostname
+#export PROMPT='%$USER@%m> $(git_prompt_info)'
+#export PROMPT='%(!.%{%F{yellow}%}.)$USER@%{$fg[white]%}%M ${ret_status} %{$fg[cyan]%}%c%{$reset_color%} $(git_prompt_info)'
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
@@ -106,4 +109,19 @@ alias vim='nvim'
 
 # Weather
 alias weather='curl wttr.in'  
+
+# Cowsay
+alias cow='cowsay hello'
+
+# Motivational cow
+alias motivate='motivate | cowsay'
+
+#za }}}
+# Fun start up stuff {{{
+
+# Figlet bold fonts
+figlet hello Regina     
+
+# Motivational cow
+motivate
 # }}}
