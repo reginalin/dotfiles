@@ -1,11 +1,11 @@
 " Author: Regina Lin
-"
+" 
 " Installation:	
 " 1. Using Neovim, soft-link this file to ~/.config/nvm/init.vim
 " 2. Install Vim-Plug to manage plugins by running this command: 
 " 	curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-"    	https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim<Paste>
-" 
+"    	https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+"
 " Folding:
 " zi: toggles everything ??? 
 " za: toggles current selection
@@ -14,7 +14,7 @@
 " SwapFiles: prevent their creation
 set nobackup
 set noswapfile
- 
+
 " Line Wrapping: do not wrap lines by default
 set nowrap
 
@@ -31,13 +31,8 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'erichdongubler/vim-sublime-monokai'
 Plug 'scrooloose/nerdtree'
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
+Plug 'Shougo/deoplete.nvim'
+Plug 'pangloss/vim-javascript'
 
 call plug#end()
 " }}}
@@ -49,7 +44,7 @@ colorscheme sublimemonokai
 " --------------------------------------------------------------------------------
 " Nerdtree
 " open on startup
-autocmd vimenter * NERDTree 
+" autocmd vimenter * NERDTree 
 
 " open Nerdtree even if no files specified
 autocmd StdinReadPre * let s:std_in=1
@@ -66,4 +61,21 @@ let g:deoplete#enable_at_startup = 1
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
 " --------------------------------------------------------------------------------
+"  Vim-Javascript
+let g:javascript_plugin_jsdoc = 1
+let g:javascript_plugin_ngdoc = 1
+let g:javascript_plugin_flow = 1
+
+"" Code folding for JS 
+"augroup javascript_folding
+"    au!
+"    au FileType javascript setlocal foldmethod=syntax
+"augroup END
+" }}}
+" Language specific {{{
+" JavaScript (tab width 4 chr, wrap at 79th)
+autocmd FileType javascript set sw=4
+autocmd FileType javascript set ts=4
+autocmd FileType javascript set sts=4
+
 " }}}
