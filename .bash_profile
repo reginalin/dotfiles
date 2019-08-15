@@ -12,4 +12,5 @@ alias vim='nvim'
 # Weather
 alias weather='curl wttr.in'
 
-
+# Figlet
+figlet -f "hello Regina"
