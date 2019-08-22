@@ -32,9 +32,7 @@ ZSH_THEME="robbyrussell"
 # Uncomment the following line to disable colors in ls.
 DISABLE_LS_COLORS="true"
 
-# Uncomment the following line to disable auto-setting terminal title. 
-DISABLE_AUTO_TITLE="true" 
-
+# Uncomment the following line to disable auto-setting terminal title.  DISABLE_AUTO_TITLE="true" 
 # Uncomment the following line to enable command auto-correction.
 ENABLE_CORRECTION="true"
 
@@ -93,6 +91,9 @@ alias tmux='tmux -2'
 # Clear
 alias c='clear'
 
+# Reload zshrc
+alias sz='source ~/.zshrc'
+
 #za }}}
 # Fun start up stuff {{{
 
@@ -106,8 +107,12 @@ elif [ $((time)) -lt 17 ]; then
 else
   greeting="good evening"
 fi
+
 figlet $greeting | lolcat
 
 # Motivational rainbow animal 
-motivate | lolcat
+MOTIVATION=$(motivate)
+CLEAN_MOTIVATION=${MOTIVATION[@]//\[1;m/}
+echo $CLEAN_MOTIVATION | lolcat
+
 # }}}
