@@ -81,11 +81,11 @@ alias vim='nvim'
 # Weather
 alias weather='curl wttr.in'
 
-# Cowsay
+# Cowsay 
 alias cow='cowsay hello'
 
-# Motivational cow
-alias motivate='motivate | cowsay'
+# Motivational thinking unicorn 
+alias motivate='motivate | cowthink -f unipony-smaller' 
 
 # Get sublime color theme to work in tmux
 alias tmux='tmux -2'
@@ -97,8 +97,17 @@ alias c='clear'
 # Fun start up stuff {{{
 
 # Figlet bold fonts
-figlet hello Regina
+greeting="good morning"
+time=$(date +%H)
+if [ $((time)) -lt 12 ]; then
+  greeting="good morning"
+elif [ $((time)) -lt 17 ]; then
+  greeting="good afternoon"
+else
+  greeting="good evening"
+fi
+figlet $greeting | lolcat
 
-# Motivational cow
-motivate
+# Motivational rainbow animal 
+motivate | lolcat
 # }}}
