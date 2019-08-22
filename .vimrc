@@ -22,6 +22,11 @@ set showtabline=2
 
 set number
 
+" Show line break bar
+if exists('&colorcolumn')
+	set colorcolumn=79
+endif
+
 " Folding
 set foldmethod=marker
 
