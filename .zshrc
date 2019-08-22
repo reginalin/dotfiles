@@ -70,20 +70,13 @@ source $ZSH/oh-my-zsh.sh
 #
 # Example aliases alias zshconfig="mate ~/.zshrc" alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# USEFUL aliases
 # Run neovim (on Linux)
 alias nvim='~/tools/nvim.appimage'
 
 # Remap vim to neovim
 alias vim='nvim'
 
-# Weather
-alias weather='curl wttr.in'
-
-# Cowsay 
-alias cow='cowsay hello'
-
-# Motivational thinking unicorn 
-alias motivate='motivate | cowthink -f unipony-smaller' 
 
 # Get sublime color theme to work in tmux
 alias tmux='tmux -2'
@@ -93,6 +86,20 @@ alias c='clear'
 
 # Reload zshrc
 alias sz='source ~/.zshrc'
+
+###############################################################################
+# FUN aliases
+# Weather
+alias weather='curl wttr.in'
+
+# Cowsay 
+alias cow='cowsay hello'
+
+# Motivational thinking unicorn 
+alias motivate='motivate | cowthink -f unipony-smaller' 
+
+# Make fortunes colorful
+alias fortune='fortune | lolcat'
 
 #za }}}
 # Fun start up stuff {{{
