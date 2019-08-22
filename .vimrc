@@ -31,26 +31,36 @@ endif
 set foldmethod=marker
 
 " }}}
-" General: remapping {{{
+" General: Remapping {{{
 " vim split navigation
 nnoremap <C-J> <C-W>j
 nnoremap <C-K> <C-W>k
 nnoremap <C-L> <C-W>l
 nnoremap <C-H> <C-W>h
+nnoremap <C-O> <C-W>w
 
 " }}}
 " General: Vim-Plug {{{
 call plug#begin('~/.local/share/nvim/plugged')
 
-Plug 'erichdongubler/vim-sublime-monokai'
-Plug 'scrooloose/nerdtree'
-Plug 'Shougo/deoplete.nvim'
-Plug 'pangloss/vim-javascript'
+Plug 'erichdongubler/vim-sublime-monokai' " color scheme
+Plug 'scrooloose/nerdtree' " file explorer
+Plug 'Shougo/deoplete.nvim' " autocomplete suggestions
+Plug 'pangloss/vim-javascript' 
+Plug 'townk/vim-autoclose'
+
+" Javascript autocomplete
+Plug 'wokalski/autocomplete-flow'
+Plug 'Shougo/neosnippet'
+Plug 'Shougo/neosnippet-snippets'
+
+" Plugins to check out later:
+" jedi-vim
 
 call plug#end()
 " }}}
 " Plugin Configurations {{{
-" Sublime monokai
+" Sublime monokai color scheme
 syntax on 
 colorscheme sublimemonokai
 
@@ -77,6 +87,8 @@ else
 endif
 let g:deoplete#enable_at_startup = 1
 
+let g:neosnippet#enable_completed_snippet = 1
+
 " <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
@@ -91,6 +103,10 @@ let g:javascript_plugin_flow = 1
 "    au!
 "    au FileType javascript setlocal foldmethod=syntax
 "augroup END
+
+" --------------------------------------------------------------------------------
+"  Formatting
+
 " }}}
 " Language specific {{{
 " JavaScript (tab width 4 chr, wrap at 79th)
