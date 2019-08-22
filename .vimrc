@@ -31,6 +31,14 @@ endif
 set foldmethod=marker
 
 " }}}
+" General: remapping {{{
+" vim split navigation
+nnoremap <C-J> <C-W>j
+nnoremap <C-K> <C-W>k
+nnoremap <C-L> <C-W>l
+nnoremap <C-H> <C-W>h
+
+" }}}
 " General: Vim-Plug {{{
 call plug#begin('~/.local/share/nvim/plugged')
 
