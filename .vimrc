@@ -20,7 +20,9 @@ set nowrap
 
 set showtabline=2
 
-set number
+" Line number 
+set relativenumber 
+"set number
 
 " Show line break bar
 if exists('&colorcolumn')
