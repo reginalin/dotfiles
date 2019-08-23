@@ -33,6 +33,9 @@ set foldmethod=marker
 " Line highlights 
 set cursorline
 
+" press space to disable highlights after search 
+noremap <silent> <Space> :silent noh<Bar>echo<CR>
+
 " }}}
 " General: Remapping {{{
 " vim split navigation
@@ -113,9 +116,9 @@ augroup end
 " }}}
 " }}}
 " Language specific {{{
-" JavaScript (tab width 4 chr, wrap at 79th)
-autocmd FileType javascript set sw=4
-autocmd FileType javascript set ts=4
-autocmd FileType javascript set sts=4
+" JavaScript (tab width 2 chr, wrap at 79th)
+autocmd FileType javascript set sw=2
+autocmd FileType javascript set ts=2
+autocmd FileType javascript set sts=2
 
 " }}}
