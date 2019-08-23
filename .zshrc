@@ -70,7 +70,7 @@ source $ZSH/oh-my-zsh.sh
 #
 # Example aliases alias zshconfig="mate ~/.zshrc" alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# USEFUL aliases
+# USEFUL aliases {{{
 # Run neovim (on Linux)
 alias nvim='~/tools/nvim.appimage'
 
@@ -87,8 +87,16 @@ alias c='clear'
 # Reload zshrc
 alias sz='source ~/.zshrc'
 
-###############################################################################
-# FUN aliases
+# open vim anywhere
+alias editv='vim ~/.vimrc'
+
+# open tmux anywhere
+alias editt='vim ~/.tmux.conf'
+
+#open zshrc anywhere
+alias editz='vim ~/.zshrc'
+# }}}
+# FUN aliases {{{
 # Weather
 alias weather='curl wttr.in'
 
@@ -100,8 +108,8 @@ alias motivate='motivate | cowthink -f unipony-smaller'
 
 # Make fortunes colorful
 alias fortune='fortune | lolcat'
-
-#za }}}
+# }}}
+# }}}
 # Fun start up stuff {{{
 
 # Figlet bold fonts
