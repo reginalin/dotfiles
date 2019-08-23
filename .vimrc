@@ -54,6 +54,8 @@ Plug 'wokalski/autocomplete-flow'
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
 
+Plug 'evanleck/vim-svelte' "svelte highlights
+
 " Plugins to check out later:
 " jedi-vim
 
