@@ -30,6 +30,9 @@ endif
 " Folding
 set foldmethod=marker
 
+" Line highlights 
+set cursorline
+
 " }}}
 " General: Remapping {{{
 " vim split navigation
