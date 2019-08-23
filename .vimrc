@@ -45,7 +45,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'erichdongubler/vim-sublime-monokai' " color scheme
 Plug 'scrooloose/nerdtree' " file explorer
-Plug 'Shougo/deoplete.nvim' " autocomplete suggestions
+Plug 'Shougo/deoplete.nvim' " autocomplete
 Plug 'pangloss/vim-javascript' 
 Plug 'townk/vim-autoclose'
 
@@ -55,6 +55,7 @@ Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
 
 Plug 'evanleck/vim-svelte' "svelte highlights
+Plug 'tpope/vim-ragtag' " tag closings
 
 " Plugins to check out later:
 " jedi-vim
@@ -62,12 +63,11 @@ Plug 'evanleck/vim-svelte' "svelte highlights
 call plug#end()
 " }}}
 " Plugin Configurations {{{
-" Sublime monokai color scheme
+" color scheme {{{
 syntax on 
 colorscheme sublimemonokai
-
-" --------------------------------------------------------------------------------
-" Nerdtree
+" }}}
+" nerdtree {{{
 " open on startup
 " autocmd vimenter * NERDTree 
 
@@ -77,9 +77,8 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
 " open using Ctrl+n
 map <C-n> :NERDTreeToggle<CR>  
-
-" --------------------------------------------------------------------------------
-" Deoplete autocomplete
+" }}} 
+" autocomplete {{{
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
@@ -93,18 +92,21 @@ let g:neosnippet#enable_completed_snippet = 1
 
 " <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-
-" --------------------------------------------------------------------------------
-"  Vim-Javascript
+" }}}
+" vim-javascript {{{
 let g:javascript_plugin_jsdoc = 1
 let g:javascript_plugin_ngdoc = 1
 let g:javascript_plugin_flow = 1
+" }}}
+" tag closings {{{
+let g:ragtag_global_maps = 1
 
-"" Code folding for JS 
-"augroup javascript_folding
-"    au!
-"    au FileType javascript setlocal foldmethod=syntax
-"augroup END
+augroup ragtag_config
+  autocmd!
+  autocmd FileType javascript call RagtagInit()
+  autocmd FileType svelte call RagtagInit()
+augroup end
+" }}}
 
 " --------------------------------------------------------------------------------
 "  Formatting
