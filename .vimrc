@@ -48,14 +48,14 @@ Plug 'scrooloose/nerdtree' " file explorer
 Plug 'Shougo/deoplete.nvim' " autocomplete
 Plug 'pangloss/vim-javascript' 
 Plug 'townk/vim-autoclose'
+Plug 'evanleck/vim-svelte' "svelte highlights
+Plug 'tpope/vim-ragtag' " tag closings
+Plug 'scrooloose/nerdcommenter' "commenting support
 
 " Javascript autocomplete
 Plug 'wokalski/autocomplete-flow'
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
-
-Plug 'evanleck/vim-svelte' "svelte highlights
-Plug 'tpope/vim-ragtag' " tag closings
 
 " Plugins to check out later:
 " jedi-vim
@@ -106,11 +106,8 @@ augroup ragtag_config
   autocmd FileType javascript call RagtagInit()
   autocmd FileType svelte call RagtagInit()
 augroup end
+
 " }}}
-
-" --------------------------------------------------------------------------------
-"  Formatting
-
 " }}}
 " Language specific {{{
 " JavaScript (tab width 4 chr, wrap at 79th)
