@@ -58,7 +58,9 @@ Plug 'pangloss/vim-javascript'
 Plug 'townk/vim-autoclose'
 Plug 'evanleck/vim-svelte' "svelte highlights
 Plug 'tpope/vim-ragtag' " tag closings
-Plug 'scrooloose/nerdcommenter' "commenting support
+Plug 'scrooloose/nerdcommenter' " commenting support
+"Plug 'nathanaelkane/vim-indent-guides' "indent guides
+Plug 'yggdroot/indentline'
 
 " Javascript autocomplete
 Plug 'wokalski/autocomplete-flow'
@@ -116,11 +118,25 @@ augroup ragtag_config
 augroup end
 
 " }}}
+" indent guides {{{
+"let g:indent_guides_enable_on_vim_startup = 1
+"let g:indent_guides_auto_colors = 0
+"hi IndentGuidesOdd  guibg=white ctermbg=3
+"hi IndentGuidesEven guibg=white ctermbg=4
+"let g:indent_guides_guide_size = 1 " set skinny line guides 
+let g:indentLine_enabled = 1
+let g:indentLine_color_term = 239
+let g:indentLine_char = '|'
+" }}}
 " }}}
 " Language specific {{{
 " JavaScript (tab width 2 chr, wrap at 79th)
 autocmd FileType javascript set sw=2
 autocmd FileType javascript set ts=2
 autocmd FileType javascript set sts=2
+
+autocmd FileType json set sw=2
+autocmd FileType json set ts=2
+autocmd FileType json set sts=2
 
 " }}}
