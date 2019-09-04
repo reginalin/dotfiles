@@ -59,8 +59,8 @@ Plug 'townk/vim-autoclose'
 Plug 'evanleck/vim-svelte' "svelte highlights
 Plug 'tpope/vim-ragtag' " tag closings
 Plug 'scrooloose/nerdcommenter' " commenting support
-"Plug 'nathanaelkane/vim-indent-guides' "indent guides
 Plug 'yggdroot/indentline'
+Plug 'pappasam/vim-filetype-formatter'
 
 " Javascript autocomplete
 Plug 'wokalski/autocomplete-flow'
@@ -139,4 +139,7 @@ autocmd FileType json set sw=2
 autocmd FileType json set ts=2
 autocmd FileType json set sts=2
 
+autocmd FileType html set sw=2
+autocmd FileType html set ts=2
+autocmd FileType html set sts=2
 " }}}

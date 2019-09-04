@@ -33,7 +33,9 @@ ZSH_THEME="robbyrussell"
 # Uncomment the following line to disable colors in ls.
 DISABLE_LS_COLORS="true"
 
-# Uncomment the following line to disable auto-setting terminal title.  DISABLE_AUTO_TITLE="true" 
+# Uncomment the following line to disable auto-setting terminal title.  
+DISABLE_AUTO_TITLE="true" 
+
 # Uncomment the following line to enable command auto-correction.
 ENABLE_CORRECTION="true"
 
@@ -94,8 +96,13 @@ alias editv='vim ~/.vimrc'
 # open tmux anywhere
 alias editt='vim ~/.tmux.conf'
 
-#open zshrc anywhere
+# open zshrc anywhere
 alias editz='vim ~/.zshrc'
+
+# virtual environment	
+alias venv='source venv/bin/activate'
+
+
 # }}}
 # FUN aliases {{{
 # Weather
