@@ -68,7 +68,7 @@ Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
 
 " Plugins to check out later:
-" jedi-vim
+Plug 'davidhalter/jedi-vim'
 
 call plug#end()
 " }}}
