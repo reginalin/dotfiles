@@ -141,3 +141,11 @@ CLEAN_MOTIVATION=${MOTIVATION[@]//\[1;m/}
 motivate
 
 # }}}
+
+. $HOME/.asdf/asdf.sh
+
+. $HOME/.asdf/completions/asdf.bash
+
+. $HOME/.asdf/asdf.sh
+
+. $HOME/.asdf/completions/asdf.bash

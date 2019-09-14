@@ -9,7 +9,7 @@
 " Folding:
 " zi: toggles everything ??? 
 " za: toggles current selection
-"
+
 " General: Global config {{{
 " SwapFiles: prevent their creation
 set nobackup
@@ -54,21 +54,26 @@ call plug#begin('~/.local/share/nvim/plugged')
 Plug 'erichdongubler/vim-sublime-monokai' " color scheme
 Plug 'scrooloose/nerdtree' " file explorer
 Plug 'Shougo/deoplete.nvim' " autocomplete
-Plug 'pangloss/vim-javascript' 
 Plug 'townk/vim-autoclose'
-Plug 'evanleck/vim-svelte' "svelte highlights
 Plug 'tpope/vim-ragtag' " tag closings
 Plug 'scrooloose/nerdcommenter' " commenting support
 Plug 'yggdroot/indentline'
 Plug 'pappasam/vim-filetype-formatter'
+Plug 'davidhalter/jedi-vim' "jump to definition
+Plug 'tpope/vim-surround' "add brackets around things ysiw* yss*
+Plug 'chiel92/vim-autoformat'
 
-" Javascript autocomplete
+" Javascript
+Plug 'pangloss/vim-javascript' 
 Plug 'wokalski/autocomplete-flow'
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
+Plug 'Valloric/MatchTagAlways'
+Plug 'beautify-web/js-beautify' "formatter for js
 
-" Plugins to check out later:
-Plug 'davidhalter/jedi-vim'
+" Language specific highlighting
+Plug 'evanleck/vim-svelte' "svelte highlights
+Plug 'mxw/vim-jsx'
 
 call plug#end()
 " }}}
@@ -142,4 +147,8 @@ autocmd FileType json set sts=2
 autocmd FileType html set sw=2
 autocmd FileType html set ts=2
 autocmd FileType html set sts=2
+
+autocmd FileType css set sw=2
+autocmd FileType css set ts=2
+autocmd FileType css set sts=2
 " }}}
