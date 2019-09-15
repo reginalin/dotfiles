@@ -123,6 +123,15 @@ augroup ragtag_config
 augroup end
 
 " }}}
+" MatchTag {{{
+let g:mta_filetypes = {
+    \ 'html' : 1,
+    \ 'xhtml' : 1,
+    \ 'xml' : 1,
+    \ 'jinja' : 1,
+    \'javascript': 1,
+    \}
+" }}}
 " indent guides {{{
 "let g:indent_guides_enable_on_vim_startup = 1
 "let g:indent_guides_auto_colors = 0
