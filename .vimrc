@@ -22,7 +22,7 @@ set showtabline=2
 
 " Line number 
 set relativenumber 
-"set number
+set number
 
 " Show line break bar
 if exists('&colorcolumn')
@@ -160,4 +160,8 @@ autocmd FileType html set sts=2
 autocmd FileType css set sw=2
 autocmd FileType css set ts=2
 autocmd FileType css set sts=2
+
+autocmd FileType yaml set sw=2
+autocmd FileType yaml set ts=2
+autocmd FileType yaml set sts=2
 " }}}
