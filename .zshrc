@@ -78,8 +78,9 @@ source $ZSH/oh-my-zsh.sh
 alias nvim='~/tools/nvim.appimage'
 
 # Remap vim to neovim
+alias f='nvim'
+alias vi='nvim'
 alias vim='nvim'
-
 
 # Get sublime color theme to work in tmux
 alias tmux='tmux -2'
@@ -100,9 +101,8 @@ alias editt='vim ~/.tmux.conf'
 alias editz='vim ~/.zshrc'
 
 # virtual environment	
-alias venv='source venv/bin/activate'
-
-
+alias createv='python3 -m venv venv' # create virtualenv
+alias venv='source venv/bin/activate' # activate virtualenv
 # }}}
 # FUN aliases {{{
 # Weather
