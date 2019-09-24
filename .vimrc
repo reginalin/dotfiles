@@ -10,10 +10,18 @@
 " zi: toggles everything ??? 
 " za: toggles current selection
 
+ 
+
 " General: Global config {{{
+" Enable hidden buffers "
+set hidden 
+
 " SwapFiles: prevent their creation
 set nobackup
 set noswapfile
+
+" Enable filetype detection, plugins, and indentation "
+filetype plugin indent on
 
 " Line Wrapping: do not wrap lines by default
 set nowrap
@@ -37,6 +45,35 @@ set cursorline
 
 " press space to disable highlights after search 
 noremap <silent> <Space> :silent noh<Bar>echo<CR>
+
+" don't timeout on mappings
+set notimeout
+
+" do timeout on terminal key codes
+set ttimeout
+
+" Filetype recognition "
+augroup filetype_recognition
+  autocmd!
+  autocmd BufNewFile,BufRead,BufEnter *.hql,*.q set filetype=hive
+  autocmd BufNewFile,BufRead,BufEnter *.config,.cookiecutterrc set filetype=yaml
+  autocmd BufNewFile,BufRead,BufEnter .jrnl_config,*.bowerrc,*.babelrc,*.eslintrc,*.slack-term
+        \ set filetype=json
+  autocmd BufNewFile,BufRead,BufEnter *.asm set filetype=nasm
+  autocmd BufNewFile,BufRead,BufEnter *.handlebars set filetype=html
+  autocmd BufNewFile,BufRead,BufEnter *.m,*.oct set filetype=octave
+  autocmd BufNewFile,BufRead,BufEnter *.jsx set filetype=javascript
+  autocmd BufNewFile,BufRead,BufEnter *.gs set filetype=javascript
+  autocmd BufNewFile,BufRead,BufEnter *.cfg,*.ini,.coveragerc,*pylintrc
+        \ set filetype=dosini
+  autocmd BufNewFile,BufRead,BufEnter *.tsv set filetype=tsv
+  autocmd BufNewFile,BufRead,BufEnter *.toml set filetype=toml
+  autocmd BufNewFile,BufRead,BufEnter Dockerfile.* set filetype=Dockerfile
+  autocmd BufNewFile,BufRead,BufEnter Makefile.* set filetype=make
+  autocmd BufNewFile,BufRead,BufEnter poetry.lock set filetype=toml
+  autocmd BufNewFile,BufRead,BufEnter .gitignore,.dockerignore
+        \ set filetype=conf
+augroup END
 
 " }}}
 " General: Remapping {{{
@@ -74,6 +111,7 @@ Plug 'beautify-web/js-beautify' "formatter for js
 " Language specific highlighting
 Plug 'evanleck/vim-svelte' "svelte highlights
 Plug 'mxw/vim-jsx'
+Plug 'rust-lang/rust.vim' " Rust highlights
 
 call plug#end()
 " }}}
@@ -144,24 +182,50 @@ let g:indentLine_color_term = 239
 " }}}
 " }}}
 " Language specific {{{
+set expandtab shiftwidth=2 softtabstop=2 tabstop=8
+augroup indentation_sr
+  autocmd!
+  autocmd Filetype python,c,haskell,markdown,rust,rst,kv,nginx,asm,nasm,gdscript3
+        \ setlocal shiftwidth=4 softtabstop=4 tabstop=8
+  autocmd Filetype dot setlocal autoindent cindent
+  autocmd Filetype make,tsv,votl,go
+        \ setlocal tabstop=4 softtabstop=0 shiftwidth=4 noexpandtab
+  " Prevent auto-indenting from occuring
+  autocmd Filetype yaml setlocal indentkeys-=<:>
+
+  autocmd Filetype ron setlocal cindent
+        \ cinkeys=0{,0},0(,0),0[,0],:,0#,!^F,o,O,e
+        \ cinoptions+='(s,m2'
+        \ cinoptions+='(s,U1'
+        \ cinoptions+='j1'
+        \ cinoptions+='J1'
+augroup END
+
 " JavaScript (tab width 2 chr, wrap at 79th)
-autocmd FileType javascript set sw=2
-autocmd FileType javascript set ts=2
-autocmd FileType javascript set sts=2
+"autocmd FileType javascript set sw=2
+"autocmd FileType javascript set ts=2
+"autocmd FileType javascript set sts=2
 
-autocmd FileType json set sw=2
-autocmd FileType json set ts=2
-autocmd FileType json set sts=2
+"autocmd FileType json set sw=2
+"autocmd FileType json set ts=2
+"autocmd FileType json set sts=2
 
-autocmd FileType html set sw=2
-autocmd FileType html set ts=2
-autocmd FileType html set sts=2
+"autocmd FileType html set sw=2
+"autocmd FileType html set ts=2
+"autocmd FileType html set sts=2
 
-autocmd FileType css set sw=2
-autocmd FileType css set ts=2
-autocmd FileType css set sts=2
+"autocmd FileType css set sw=2
+"autocmd FileType css set ts=2
+"autocmd FileType css set sts=2
 
-autocmd FileType yaml set sw=2
-autocmd FileType yaml set ts=2
-autocmd FileType yaml set sts=2
+"autocmd FileType yaml set sw=2
+"autocmd FileType yaml set ts=2
+"autocmd FileType yaml set sts=2
+
+"autocmd FileType md set sw=2
+"autocmd FileType md set ts=2
+"autocmd FileType md set sts=2
 " }}}
+" This will prevent :autocmd, shell and write commands from being
+" run inside project-specific .vimrc files unless they’re owned by you.
+set secure
