@@ -13,8 +13,14 @@
  
 
 " General: Global config {{{
+let mapleader = ','
+let maplocalleader = '\\'
+
 " Enable hidden buffers "
 set hidden 
+
+" Enable modifying of buffers (ex. Nerdtree refresh) "
+set modifiable
 
 " SwapFiles: prevent their creation
 set nobackup
@@ -82,7 +88,14 @@ nnoremap <C-J> <C-W>j
 nnoremap <C-K> <C-W>k
 nnoremap <C-L> <C-W>l
 nnoremap <C-H> <C-W>h
-nnoremap <C-O> <C-W>w
+"nnoremap <C-O> <C-W>w
+
+" ~/.vimrc
+" Remap formatting 
+nnoremap <leader>f :FiletypeFormat<cr>
+vnoremap <leader>f :FiletypeFormat<cr>
+
+
 
 " }}}
 " General: Vim-Plug {{{
@@ -112,6 +125,15 @@ Plug 'beautify-web/js-beautify' "formatter for js
 Plug 'evanleck/vim-svelte' "svelte highlights
 Plug 'mxw/vim-jsx'
 Plug 'rust-lang/rust.vim' " Rust highlights
+Plug 'cespare/vim-toml'
+
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
+
+" (Optional) Multi-entry selection UI.
+Plug 'junegunn/fzf'
 
 call plug#end()
 " }}}
@@ -179,6 +201,27 @@ let g:mta_filetypes = {
 let g:indentLine_enabled = 1
 let g:indentLine_color_term = 239
 "let g:indentLine_char = '|'
+" }}}
+" language client {{{
+set hidden
+
+let g:LanguageClient_serverCommands = {
+  \ 'python': ['jedi-language-server'],
+  \ }
+
+function! ConfigureLanguageClient()
+  if has_key(g:LanguageClient_serverCommands, &filetype)
+    nnoremap <buffer> <C-]> :call LanguageClient#textDocument_definition()<CR>
+    nnoremap <buffer> <leader>sd :call LanguageClient#textDocument_hover()<CR>
+    nnoremap <buffer> <leader>sr :call LanguageClient#textDocument_rename()<CR>
+    nnoremap <buffer> <leader>su :call LanguageClient#textDocument_references()<CR>
+    setlocal omnifunc=LanguageClient#complete
+  endif
+endfunction
+
+augroup language_servers
+  autocmd FileType * call ConfigureLanguageClient()
+augroup END
 " }}}
 " }}}
 " Language specific {{{
