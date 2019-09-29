@@ -96,7 +96,6 @@ nnoremap <leader>f :FiletypeFormat<cr>
 vnoremap <leader>f :FiletypeFormat<cr>
 
 
-
 " }}}
 " General: Vim-Plug {{{
 call plug#begin('~/.local/share/nvim/plugged')
@@ -223,6 +222,11 @@ augroup language_servers
   autocmd FileType * call ConfigureLanguageClient()
 augroup END
 " }}}
+" }}}
+" Filetype formatter {{{
+let g:vim_filetype_formatter_commands = {
+      \ 'text': 'poetry run textformat',
+      \ }
 " }}}
 " Language specific {{{
 set expandtab shiftwidth=2 softtabstop=2 tabstop=8
