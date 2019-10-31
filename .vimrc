@@ -10,8 +10,6 @@
 " zi: toggles everything ??? 
 " za: toggles current selection
 
- 
-
 " General: Global config {{{
 let mapleader = ','
 let maplocalleader = '\\'
@@ -81,6 +79,13 @@ augroup filetype_recognition
         \ set filetype=conf
 augroup END
 
+" Enable true color "
+if $COLORTERM ==# 'truecolor'
+  set termguicolors
+else
+  set guicursor=
+endif
+
 " }}}
 " General: Remapping {{{
 " vim split navigation
@@ -125,6 +130,9 @@ Plug 'evanleck/vim-svelte' "svelte highlights
 Plug 'mxw/vim-jsx'
 Plug 'rust-lang/rust.vim' " Rust highlights
 Plug 'cespare/vim-toml'
+Plug 'posva/vim-vue' " vue
+Plug 'maxmellon/vim-jsx-pretty' " jsx highlights
+Plug 'leafgarland/typescript-vim' " ts syntax
 
 Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
@@ -206,6 +214,7 @@ set hidden
 
 let g:LanguageClient_serverCommands = {
   \ 'python': ['jedi-language-server'],
+  \ 'make': ['jedi-language-server'],
   \ }
 
 function! ConfigureLanguageClient()
@@ -220,6 +229,12 @@ endfunction
 
 augroup language_servers
   autocmd FileType * call ConfigureLanguageClient()
+augroup END
+" }}}
+" typescript {{{
+augroup tsx_recognition
+  autocmd!
+  autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
 augroup END
 " }}}
 " }}}
