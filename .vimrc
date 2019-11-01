@@ -329,7 +329,6 @@ augroup indentation_sr
         \ cinoptions+='J1'
 augroup END
 
-" JavaScript (tab width 2 chr, wrap at 79th)
 " }}}
 " This will prevent :autocmd, shell and write commands from being
 " run inside project-specific .vimrc files unless they’re owned by you.
