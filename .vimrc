@@ -249,7 +249,17 @@ set hidden
 let g:LanguageClient_serverCommands = {
   \ 'python': ['jedi-language-server'],
   \ 'make': ['jedi-language-server'],
+  \ 'rust': ['rls'],
+  \ 'javascript': ['npx', 'flow', 'lsp'],
+  \ 'javascript.jsx': ['npx', 'flow', 'lsp'],
+  \ 'typescript': ['npx', 'typescript-language-server', '--stdio'],
+  \ 'typescript.tsx': ['npx', 'typescript-language-server', '--stdio'],
+  \ 'svelte': ['svelteserver'],
   \ }
+
+let g:LanguageClient_autoStart = 1
+let g:LanguageClient_hoverPreview = 'Auto'
+let g:LanguageClient_diagnosticsEnable = 0
 
 function! ConfigureLanguageClient()
   if has_key(g:LanguageClient_serverCommands, &filetype)
@@ -275,7 +285,7 @@ augroup END
 " Plugin Configurations: minpac {{{
 " EchoDoc {{{
 let g:echodoc#enable_at_startup = v:true
-let g:echodoc#type = 'floating'
+let g:echodoc#type = 'virtual'
 let g:echodoc#highlight_identifier = 'Identifier'
 let g:echodoc#highlight_arguments = 'QuickScopePrimary'
 let g:echodoc#highlight_trailing = 'Type'
@@ -284,6 +294,9 @@ let g:echodoc#highlight_trailing = 'Type'
 " Filetype formatter {{{
 let g:vim_filetype_formatter_commands = {
       \ 'text': 'poetry run textformat',
+      \ 'javascript.jsx': g:filetype_formatter#ft#formatters['javascript']['prettier'],
+      \ 'typescript': g:filetype_formatter#ft#formatters['javascript']['prettier'],
+      \ 'typescript.tsx': g:filetype_formatter#ft#formatters['javascript']['prettier'],
       \ }
 " }}}
 " Language specific {{{
