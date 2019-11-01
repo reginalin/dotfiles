@@ -144,6 +144,40 @@ Plug 'junegunn/fzf'
 
 call plug#end()
 " }}}
+" General: Vim packages: minpac {{{
+
+function PackInit() abort
+  packadd minpac
+  call minpac#init()
+  call minpac#add('git@github.com:k-takata/minpac', { 'type': 'opt' })
+
+  " Autocompletion and IDE features "
+  call minpac#add('git@github.com:Shougo/echodoc.vim')
+endfunction
+
+function! PackList(...)
+  call PackInit()
+  return join(sort(keys(minpac#getpluglist())), "\n")
+endfunction
+
+" Define user commands for updating/cleaning the plugins.
+" Each of them calls PackInit() to load minpac and register
+" the information of plugins, then performs the task.
+command! PackUpdate call PackInit() | echo 'Updating packages...' |
+      \ call minpac#update('')
+command! PU PackUpdate
+command! PackStatus call PackInit() | echo 'Getting package status...' |
+      \ call minpac#status()
+command! PackClean call PackInit() | call minpac#clean()
+command! -nargs=1 -complete=custom,PackList PackRemove call PackInit() |
+      \ call minpac#clean(<q-args>)
+command! -nargs=1 -complete=custom,PackList PackOpen call PackInit() |
+      \ execute 'tabe ' . minpac#getpluginfo(<q-args>).dir |
+      \ execute 'lcd ' . minpac#getpluginfo(<q-args>).dir
+command! -nargs=1 -complete=custom,PackList PackBrowser call PackInit() |
+      \ call openbrowser#open(minpac#getpluginfo(<q-args>).url)
+
+" }}}
 " Plugin Configurations {{{
 " color scheme {{{
 syntax on 
@@ -236,6 +270,15 @@ augroup tsx_recognition
   autocmd!
   autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
 augroup END
+" }}}
+" }}}
+" Plugin Configurations: minpac {{{
+" EchoDoc {{{
+let g:echodoc#enable_at_startup = v:true
+let g:echodoc#type = 'floating'
+let g:echodoc#highlight_identifier = 'Identifier'
+let g:echodoc#highlight_arguments = 'QuickScopePrimary'
+let g:echodoc#highlight_trailing = 'Type'
 " }}}
 " }}}
 " Filetype formatter {{{
