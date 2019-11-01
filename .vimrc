@@ -14,8 +14,7 @@
 let mapleader = ','
 let maplocalleader = '\\'
 
-" Enable hidden buffers "
-set hidden 
+set hidden  " Enable hidden buffers "
 
 " Enable modifying of buffers (ex. Nerdtree refresh) "
 set modifiable
@@ -52,6 +51,11 @@ noremap <silent> <Space> :silent noh<Bar>echo<CR>
 
 " don't timeout on mappings
 set notimeout
+
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
+set expandtab " tabs are spaces
 
 " do timeout on terminal key codes
 set ttimeout
@@ -310,6 +314,12 @@ augroup indentation_sr
         \ setlocal tabstop=4 softtabstop=0 shiftwidth=4 noexpandtab
   " Prevent auto-indenting from occuring
   autocmd Filetype yaml setlocal indentkeys-=<:>
+  autocmd FileType javascript set sw=2 ts=2 sts=2
+  autocmd FileType json set sw=2 ts=2 sts=2
+  autocmd FileType html set sw=2 ts=2 sts=2
+  autocmd FileType css set sw=2 ts=2 sts=2
+  autocmd FileType yaml set sw=2 ts=2 sts=2
+  autocmd FileType md set sw=2 ts=2 sts=2
 
   autocmd Filetype ron setlocal cindent
         \ cinkeys=0{,0},0(,0),0[,0],:,0#,!^F,o,O,e
@@ -320,29 +330,6 @@ augroup indentation_sr
 augroup END
 
 " JavaScript (tab width 2 chr, wrap at 79th)
-"autocmd FileType javascript set sw=2
-"autocmd FileType javascript set ts=2
-"autocmd FileType javascript set sts=2
-
-"autocmd FileType json set sw=2
-"autocmd FileType json set ts=2
-"autocmd FileType json set sts=2
-
-"autocmd FileType html set sw=2
-"autocmd FileType html set ts=2
-"autocmd FileType html set sts=2
-
-"autocmd FileType css set sw=2
-"autocmd FileType css set ts=2
-"autocmd FileType css set sts=2
-
-"autocmd FileType yaml set sw=2
-"autocmd FileType yaml set ts=2
-"autocmd FileType yaml set sts=2
-
-"autocmd FileType md set sw=2
-"autocmd FileType md set ts=2
-"autocmd FileType md set sts=2
 " }}}
 " This will prevent :autocmd, shell and write commands from being
 " run inside project-specific .vimrc files unless they’re owned by you.
