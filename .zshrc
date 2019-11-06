@@ -78,8 +78,8 @@ alias editt='vim ~/.tmux.conf'
 alias editz='vim ~/.zshrc'
 
 # virtual environment	
-alias createv='python3 -m venv venv' # create virtualenv
-alias venv='source venv/bin/activate' # activate virtualenv
+alias ve='python3 -m venv venv' # create virtualenv
+alias va='source venv/bin/activate' # activate virtualenv
 
 # poetry spawn new shell
 alias poets='poetry shell'
