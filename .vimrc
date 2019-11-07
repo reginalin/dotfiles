@@ -104,6 +104,9 @@ nnoremap <C-H> <C-W>h
 nnoremap <leader>f :FiletypeFormat<cr>
 vnoremap <leader>f :FiletypeFormat<cr>
 
+" Remap system copy "
+vnoremap <Leader>Y "+y
+vnoremap <Leader>P "+p
 
 " }}}
 " General: Vim-Plug {{{
@@ -146,6 +149,27 @@ Plug 'autozimu/LanguageClient-neovim', {
 " (Optional) Multi-entry selection UI.
 Plug 'junegunn/fzf'
 
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'yarn install',
+  \ 'branch': 'release/1.x',
+  \ 'for': [
+    \ 'javascript',
+    \ 'typescript',
+    \ 'css',
+    \ 'less',
+    \ 'scss',
+    \ 'json',
+    \ 'graphql',
+    \ 'markdown',
+    \ 'vue',
+    \ 'lua',
+    \ 'php',
+    \ 'python',
+    \ 'ruby',
+    \ 'html',
+    \ 'swift' ] }
+
+
 call plug#end()
 " }}}
 " General: Vim packages: minpac {{{
@@ -182,7 +206,7 @@ command! -nargs=1 -complete=custom,PackList PackBrowser call PackInit() |
       \ call openbrowser#open(minpac#getpluginfo(<q-args>).url)
 
 " }}}
-" Plugin Configurations {{{
+" Plugin Configurations: Vim-Plug {{{
 " color scheme {{{
 syntax on 
 colorscheme sublimemonokai
@@ -254,8 +278,6 @@ let g:LanguageClient_serverCommands = {
   \ 'python': ['jedi-language-server'],
   \ 'make': ['jedi-language-server'],
   \ 'rust': ['rls'],
-  \ 'javascript': ['npx', 'flow', 'lsp'],
-  \ 'javascript.jsx': ['npx', 'flow', 'lsp'],
   \ 'typescript': ['npx', 'typescript-language-server', '--stdio'],
   \ 'typescript.tsx': ['npx', 'typescript-language-server', '--stdio'],
   \ 'svelte': ['svelteserver'],
@@ -279,7 +301,16 @@ augroup language_servers
   autocmd FileType * call ConfigureLanguageClient()
 augroup END
 " }}}
-" typescript {{{
+" filetype recognition{{{
+augroup js_recognition
+  autocmd!
+  autocmd BufNewFile,BufFilePre,BufRead *.gs set filetype=javascript
+  autocmd BufNewFile,BufFilePre,BufRead *.js.flow set filetype=javascript
+augroup END
+augroup jsx_recognition
+  autocmd!
+  autocmd BufNewFile,BufFilePre,BufRead *.jsx set filetype=javascript.jsx
+augroup END
 augroup tsx_recognition
   autocmd!
   autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
@@ -289,7 +320,7 @@ augroup END
 " Plugin Configurations: minpac {{{
 " EchoDoc {{{
 let g:echodoc#enable_at_startup = v:true
-let g:echodoc#type = 'virtual'
+let g:echodoc#type = 'floating'
 let g:echodoc#highlight_identifier = 'Identifier'
 let g:echodoc#highlight_arguments = 'QuickScopePrimary'
 let g:echodoc#highlight_trailing = 'Type'
