@@ -14,51 +14,31 @@
 let mapleader = ','
 let maplocalleader = '\\'
 
-set hidden  " Enable hidden buffers "
-
-" Enable modifying of buffers (ex. Nerdtree refresh) "
-set modifiable
-
-" SwapFiles: prevent their creation
-set nobackup
-set noswapfile
-
 " Enable filetype detection, plugins, and indentation "
-filetype plugin indent on
+filetype plugin indent on 
 
-" Line Wrapping: do not wrap lines by default
-set nowrap
-
+set hidden " Enable hidden buffers "
+set modifiable " Enable modifying of buffers (ex. Nerdtree refresh) "
+set nobackup  " SwapFiles: prevent their creation
+set noswapfile
+set nowrap " Line Wrapping: do not wrap lines by default
 set showtabline=2
-
-" Line number 
 set relativenumber 
 set number
-
-" Show line break bar
-if exists('&colorcolumn')
-	set colorcolumn=79
-endif
-
-" Folding
-set foldmethod=marker
-
-" Line highlights 
-set cursorline
-
-" press space to disable highlights after search 
-noremap <silent> <Space> :silent noh<Bar>echo<CR>
-
-" don't timeout on mappings
-set notimeout
-
+set foldmethod=marker " Folding
+set cursorline " Line highlights 
+set notimeout " don't timeout on mappings
+" do timeout on terminal key codes
+"set ttimeout
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2
 set expandtab " tabs are spaces
 
-" do timeout on terminal key codes
-set ttimeout
+" Show line break bar
+if exists('&colorcolumn')
+	set colorcolumn=79
+endif
 
 " Filetype recognition "
 augroup filetype_recognition
@@ -107,6 +87,9 @@ vnoremap <leader>f :FiletypeFormat<cr>
 " Remap system copy "
 vnoremap <Leader>Y "+y
 vnoremap <Leader>P "+p
+
+" press space to disable highlights after search 
+noremap <silent> <Space> :silent noh<Bar>echo<CR>
 
 " }}}
 " General: Vim-Plug {{{
