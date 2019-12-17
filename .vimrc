@@ -261,6 +261,8 @@ let g:LanguageClient_serverCommands = {
   \ 'python': ['jedi-language-server'],
   \ 'make': ['jedi-language-server'],
   \ 'rust': ['rls'],
+  \ 'javascript': ['npx', '--no-install', '-q', 'flow', 'lsp'],
+  \ 'javascript.jsx': ['npx', '--no-install', 'flow', 'lsp'],
   \ 'typescript': ['npx', 'typescript-language-server', '--stdio'],
   \ 'typescript.tsx': ['npx', 'typescript-language-server', '--stdio'],
   \ 'svelte': ['svelteserver'],
