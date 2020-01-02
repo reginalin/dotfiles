@@ -96,6 +96,8 @@ noremap <silent> <Space> :silent noh<Bar>echo<CR>
 call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'erichdongubler/vim-sublime-monokai' " color scheme
+Plug 'nlknguyen/papercolor-theme' " color scheme
+Plug 'itchyny/lightline.vim' " Airline/Powerline replacement
 Plug 'scrooloose/nerdtree' " file explorer
 Plug 'Shougo/deoplete.nvim' " autocomplete
 Plug 'townk/vim-autoclose'
@@ -191,8 +193,12 @@ command! -nargs=1 -complete=custom,PackList PackBrowser call PackInit() |
 " }}}
 " Plugin Configurations: Vim-Plug {{{
 " color scheme {{{
-syntax on 
-colorscheme sublimemonokai
+"syntax on 
+"colorscheme sublimemonokai
+"
+set t_Co=256   " This is may or may not needed.
+set background=dark
+colorscheme PaperColor
 " }}}
 " nerdtree {{{
 " open on startup
