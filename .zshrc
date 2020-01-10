@@ -168,7 +168,7 @@ SPACESHIP_PROMPT_ORDER=(
 )
  
 SPACESHIP_USER_SHOW=always
-SPACESHIP_USER_SUFFIX=' 🍁  '
+SPACESHIP_USER_SUFFIX=' ❄️  '
 
 SPACESHIP_GIT_BRANCH_PREFIX='🌱 ['
 SPACESHIP_GIT_BRANCH_SUFFIX=']'
@@ -181,4 +181,45 @@ include() {
   [[ -f "$1" ]] && source "$1"
 }
 include ~/.bash/sensitive
+# }}}
+# Git {{{
+# GIT: prune/cleanup the local references to remote branch
+# and delete merged local branches
+function gc() {
+  local refs="$(git remote prune origin --dry-run)"
+  if [ -z "$refs" ]
+  then
+    echo "No prunable references found"
+  else
+    echo $refs
+    while true; do
+     read yn\?"Do you wish to prune these local references to remote branches?"
+     case $yn in
+       [Yy]* ) break;;
+       [Nn]* ) return;;
+       * ) echo "Please answer yes or no.";;
+     esac
+    done
+    git remote prune origin
+    echo "Pruned!"
+  fi
+​
+  local branches="$(git branch --merged master | grep -v '^[ *]*master$')"
+  if [ -z "$branches" ]
+  then
+    echo "No merged branches found"
+  else
+    echo $branches
+    while true; do
+     read yn\?"Do you wish to delete these merged local branches?"
+     case $yn in
+       [Yy]* ) break;;
+       [Nn]* ) return;;
+       * ) echo "Please answer yes or no.";;
+     esac
+    done
+    echo $branches | xargs git branch -d
+    echo "Deleted!"
+  fi
+}
 # }}}
