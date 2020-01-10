@@ -272,6 +272,7 @@ let g:LanguageClient_serverCommands = {
   \ 'typescript': ['npx', 'typescript-language-server', '--stdio'],
   \ 'typescript.tsx': ['npx', 'typescript-language-server', '--stdio'],
   \ 'svelte': ['svelteserver'],
+  \ 'vue': ['vls']
   \ }
 
 let g:LanguageClient_autoStart = 1
@@ -323,6 +324,7 @@ let g:vim_filetype_formatter_commands = {
       \ 'javascript.jsx': g:filetype_formatter#ft#formatters['javascript']['prettier'],
       \ 'typescript': g:filetype_formatter#ft#formatters['javascript']['prettier'],
       \ 'typescript.tsx': g:filetype_formatter#ft#formatters['javascript']['prettier'],
+      \ 'vue': g:filetype_formatter#ft#formatters['javascript']['prettier'],
       \ }
 " }}}
 " Language specific {{{
