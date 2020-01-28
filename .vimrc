@@ -126,6 +126,8 @@ Plug 'posva/vim-vue' " vue
 Plug 'maxmellon/vim-jsx-pretty' " jsx highlights
 Plug 'leafgarland/typescript-vim' " ts syntax
 
+Plug 'junegunn/limelight.vim' " spotlight content in vim
+
 Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': 'bash install.sh',
@@ -154,6 +156,8 @@ Plug 'prettier/vim-prettier', {
     \ 'html',
     \ 'swift' ] }
 
+" Linting
+Plug 'w0rp/ale'
 
 call plug#end()
 " }}}
@@ -248,6 +252,7 @@ let g:mta_filetypes = {
     \ 'xml' : 1,
     \ 'jinja' : 1,
     \'javascript': 1,
+    \'typescript': 1,
     \}
 " }}}
 " indent guides {{{
@@ -308,6 +313,17 @@ augroup tsx_recognition
   autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
 augroup END
 " }}}
+" ale {{{
+let g:ale_sign_error = '✖'
+let g:ale_sign_warning = '⚠'
+let g:ale_sign_info = 'ℹ'
+let g:ale_enabled = 0
+augroup mapping_ale_fix
+  autocmd FileType python,javascript,javascript.jsx,typescript,
+        \ nnoremap  <space>ap :ALEPreviousWrap<cr> |
+        \ nnoremap  <space>an :ALENextWrap<cr> |
+        \ nnoremap  <space>at :ALEToggle<cr>
+augroup END
 " }}}
 " Plugin Configurations: minpac {{{
 " EchoDoc {{{
@@ -354,6 +370,10 @@ augroup indentation_sr
 augroup END
 
 " }}}
+" Limelight {{{
+nmap <Leader>l <Plug>(Limelight)
+xmap <Leader>l <Plug>(Limelight)
+"
 " This will prevent :autocmd, shell and write commands from being
 " run inside project-specific .vimrc files unless they’re owned by you.
 set secure
