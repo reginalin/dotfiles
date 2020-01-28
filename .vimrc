@@ -109,7 +109,7 @@ Plug 'davidhalter/jedi-vim' "jump to definition
 Plug 'tpope/vim-surround' "add brackets around things ysiw* yss*
 Plug 'chiel92/vim-autoformat'
 
-" Javascript
+" Javascript / Typescript
 Plug 'pangloss/vim-javascript' 
 Plug 'wokalski/autocomplete-flow'
 Plug 'Shougo/neosnippet'
@@ -125,8 +125,6 @@ Plug 'cespare/vim-toml'
 Plug 'posva/vim-vue' " vue
 Plug 'maxmellon/vim-jsx-pretty' " jsx highlights
 Plug 'leafgarland/typescript-vim' " ts syntax
-
-Plug 'junegunn/limelight.vim' " spotlight content in vim
 
 Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
@@ -158,6 +156,7 @@ Plug 'prettier/vim-prettier', {
 
 Plug 'w0rp/ale' " Linting
 Plug 'shougo/echodoc' " Autocompletion and IDE features
+Plug 'junegunn/limelight.vim' " spotlight content in vim
 
 call plug#end()
 " }}}
