@@ -6,7 +6,6 @@
 # for Mac
 #export ZSH="/Users/reginalin/.oh-my-zsh"
 
-
 # for Linux
 export ZSH="/home/lregina/.oh-my-zsh"
 export CLICOLOR=1
@@ -14,9 +13,6 @@ export CLICOLOR=1
 # Set name of the theme to load --- if set to "random", it will load a random theme each time oh-my-zsh is loaded, in which case, to know which specific one was loaded, run: echo $RANDOM_THEME See 
 # https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 
-# Set list of themes to pick from when loading at random Setting this variable when ZSH_THEME=random will cause zsh to load a theme from this variable instead of looking in ~/.oh-my-zsh/themes/ If set to an empty array, this 
-# variable will have no effect. ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
-#ZSH_THEME="agnoster"
 ZSH_THEME="spaceship"
 
 DISABLE_LS_COLORS="true"
@@ -26,24 +22,38 @@ DISABLE_AUTO_TITLE="true"
 ENABLE_CORRECTION="true"
 
 # Plugins {{{
+if [ -f ~/.zplug/init.zsh ]; then
+  source ~/.zplug/init.zsh
 
-# Which plugins would you like to load? Standard plugins can be found in ~/.oh-my-zsh/plugins/* Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/ Example format: plugins=(rails git textmate ruby lighthouse) Add wisely, 
-# as too many plugins slow down shell startup.
-# export ZPLUG_HOME="$HOME/.zplug"
+  # BEGIN: List plugins
 
-source $ZSH/oh-my-zsh.sh
-#}}}
-# User configuration {{{
+  # use double quotes: the plugin manager author says we must for some reason
+  zplug "zsh-users/zsh-completions", as:plugin
+  zplug "zsh-users/zsh-syntax-highlighting", as:plugin
+  zplug "geometry-zsh/geometry", as:plugin
 
-#user @ hostname export PROMPT='%$USER@%m> $(git_prompt_info)' export PROMPT='%(!.%{%F{yellow}%}.)$USER@%{$fg[white]%}%M ${ret_status} %{$fg[cyan]%}%c%{$reset_color%} $(git_prompt_info)'
-# export MANPATH="/usr/local/man:$MANPATH"
+  #END: List plugins
 
-# You may need to manually set your language environment export LANG=en_US.UTF-8
+  # Install plugins if there are plugins that have not been installed
+  if ! zplug check --verbose; then
+      printf "Install? [y/N]: "
+      if read -q; then
+          echo; zplug install
+      fi
+  fi
 
-# Preferred editor for local and remote sessions if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim' else export EDITOR='mvim' fi
-
-# Compilation flags export ARCHFLAGS="-arch x86_64"
+  # Then, source plugins and add commands to $PATH
+  zplug load
+else
+  echo "zplug not installed, so no plugins available"
+fi
+# }}}
+# Geometry config {{{
+GEOMETRY_STATUS_SYMBOL="▲"             # default prompt symbol
+GEOMETRY_STATUS_SYMBOL_ERROR="△"       # displayed when exit value is != 0
+GEOMETRY_STATUS_COLOR_ERROR="magenta"  # prompt symbol color when exit value is != 0
+GEOMETRY_STATUS_COLOR="default"        # prompt symbol color
+GEOMETRY_STATUS_COLOR_ROOT="red"       # root prompt symbol color
 # }}}
 # Aliases {{{ Set personal aliases, overriding those provided by oh-my-zsh libs, plugins, and themes. Aliases can be placed here, though oh-my-zsh users are encouraged to define aliases within the ZSH_CUSTOM folder. For a full 
 # list of active aliases, run `alias`.
@@ -223,3 +233,5 @@ function gc() {
   fi
 }
 # }}}
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
