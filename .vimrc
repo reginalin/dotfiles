@@ -17,30 +17,48 @@ let maplocalleader = '\\'
 " Enable filetype detection, plugins, and indentation "
 filetype plugin indent on 
 
-set hidden " Enable hidden buffers "
-set modifiable " Enable modifying of buffers (ex. Nerdtree refresh) "
-set nobackup  " SwapFiles: prevent their creation
-set noswapfile
-set nowrap " Line Wrapping: do not wrap lines by default
-set showtabline=2
-set relativenumber 
-set number
-set foldmethod=marker " Folding
-set cursorline " Line highlights 
-set notimeout " don't timeout on mappings
-" do timeout on terminal key codes
-"set ttimeout
-set tabstop=2
-set softtabstop=2
-set shiftwidth=2
-set expandtab " tabs are spaces
+function! SetGlobalConfig()
+  set hidden " Enable hidden buffers "
+  set modifiable " Enable modifying of buffers (ex. Nerdtree refresh) "
+  set nobackup  " SwapFiles: prevent their creation
+  set nowritebackup
+  set noswapfile
+  set nowrap " Line Wrapping: do not wrap lines by default
+  set showtabline=2
+  set relativenumber 
+  set number
+  set foldmethod=marker " Folding
+  set cursorline " Line highlights 
+  set notimeout " don't timeout on mappings
+  " do timeout on terminal key codes
+  "set ttimeout
+  set tabstop=2
+  set softtabstop=2
+  set shiftwidth=2
+  set expandtab " tabs are spaces
+
+  " for coc
+  set cmdheight=2
+  set updatetime=300
+  set shortmess+=c 
+  set signcolumn=yes
+endfunction
+call SetGlobalConfig()
 
 " Show line break bar
 if exists('&colorcolumn')
-	set colorcolumn=79
+	set colorcolumn=80
 endif
 
-" Filetype recognition "
+" Enable true color "
+if $COLORTERM ==# 'truecolor'
+  set termguicolors
+else
+  set guicursor=
+endif
+
+" }}}
+" General: Filetype recognition{{{
 augroup filetype_recognition
   autocmd!
   autocmd BufNewFile,BufRead,BufEnter *.hql,*.q set filetype=hive
@@ -62,13 +80,6 @@ augroup filetype_recognition
   autocmd BufNewFile,BufRead,BufEnter .gitignore,.dockerignore
         \ set filetype=conf
 augroup END
-
-" Enable true color "
-if $COLORTERM ==# 'truecolor'
-  set termguicolors
-else
-  set guicursor=
-endif
 
 " }}}
 " General: Remapping {{{
@@ -111,6 +122,7 @@ Plug 'chiel92/vim-autoformat'
 
 " Javascript / Typescript
 Plug 'pangloss/vim-javascript' 
+Plug 'peitalin/vim-jsx-typescript'
 Plug 'wokalski/autocomplete-flow'
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
@@ -118,6 +130,7 @@ Plug 'Valloric/MatchTagAlways'
 Plug 'beautify-web/js-beautify' "formatter for js
 
 " Language specific highlighting
+Plug 'khalliday7/Jenkinsfile-vim-syntax'
 Plug 'evanleck/vim-svelte' "svelte highlights
 Plug 'mxw/vim-jsx'
 Plug 'rust-lang/rust.vim' " Rust highlights
@@ -154,9 +167,24 @@ Plug 'prettier/vim-prettier', {
     \ 'html',
     \ 'swift' ] }
 
-Plug 'w0rp/ale' " Linting
-Plug 'shougo/echodoc' " Autocompletion and IDE features
 Plug 'junegunn/limelight.vim' " spotlight content in vim
+
+" Autocompletion
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+for coc_plugin in [
+      \ 'fannheyward/coc-markdownlint',
+      \ 'fannheyward/coc-texlab',
+      \ 'neoclide/coc-html',
+      \ 'neoclide/coc-css',
+      \ 'neoclide/coc-json',
+      \ 'neoclide/coc-python',
+      \ 'neoclide/coc-rls',
+      \ 'neoclide/coc-tsserver',
+      \ 'neoclide/coc-yaml',
+      \ 'coc-extensions/coc-svelte',
+      \ ]
+  Plug coc_plugin, { 'do': 'yarn install --frozen-lockfile' }
+endfor
 
 call plug#end()
 " }}}
@@ -229,39 +257,6 @@ let g:mta_filetypes = {
 let g:indentLine_enabled = 1
 let g:indentLine_color_term = 239
 "let g:indentLine_char = '|'
-" }}}
-" language client {{{
-set hidden
-
-let g:LanguageClient_serverCommands = {
-  \ 'python': ['jedi-language-server'],
-  \ 'make': ['jedi-language-server'],
-  \ 'rust': ['rls'],
-  \ 'javascript': ['npx', '--no-install', '-q', 'flow', 'lsp'],
-  \ 'javascript.jsx': ['npx', '--no-install', 'flow', 'lsp'],
-  \ 'typescript': ['npx', 'typescript-language-server', '--stdio'],
-  \ 'typescript.tsx': ['npx', 'typescript-language-server', '--stdio'],
-  \ 'svelte': ['svelteserver'],
-  \ 'vue': ['vls']
-  \ }
-
-let g:LanguageClient_autoStart = 1
-let g:LanguageClient_hoverPreview = 'Auto'
-let g:LanguageClient_diagnosticsEnable = 0
-
-function! ConfigureLanguageClient()
-  if has_key(g:LanguageClient_serverCommands, &filetype)
-    nnoremap <buffer> <C-]> :call LanguageClient#textDocument_definition()<CR>
-    nnoremap <buffer> <leader>sd :call LanguageClient#textDocument_hover()<CR>
-    nnoremap <buffer> <leader>sr :call LanguageClient#textDocument_rename()<CR>
-    nnoremap <buffer> <leader>su :call LanguageClient#textDocument_references()<CR>
-    setlocal omnifunc=LanguageClient#complete
-  endif
-endfunction
-
-augroup language_servers
-  autocmd FileType * call ConfigureLanguageClient()
-augroup END
 " }}}
 " filetype recognition{{{
 augroup js_recognition
@@ -340,3 +335,41 @@ xmap <Leader>l <Plug>(Limelight)
 " This will prevent :autocmd, shell and write commands from being
 " run inside project-specific .vimrc files unless they’re owned by you.
 set secure
+" }}}
+" }}}
+" coc {{{
+"
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+nmap <silent> <C-]> <Plug>(coc-definition)
+nnoremap <silent> <C-K> :call <SID>show_documentation()<CR>
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh() 
+
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
+
+" Scroll in floating window
+nnoremap <expr><C-e> coc#util#has_float() ? coc#util#float_scroll(1) : "\<C-e>"
+nnoremap <expr><C-y> coc#util#has_float() ? coc#util#float_scroll(0) : "\<C-y>"
+" }}}
