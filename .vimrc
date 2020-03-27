@@ -42,6 +42,8 @@ function! SetGlobalConfig()
   set updatetime=300
   set shortmess+=c 
   set signcolumn=yes
+
+  set encoding=UTF-8
 endfunction
 call SetGlobalConfig()
 
@@ -102,6 +104,8 @@ vnoremap <Leader>P "+p
 " press space to disable highlights after search 
 noremap <silent> <Space> :silent noh<Bar>echo<CR>
 
+inoremap jk <esc>
+
 " }}}
 " General: Vim-Plug {{{
 call plug#begin('~/.local/share/nvim/plugged')
@@ -110,7 +114,7 @@ Plug 'erichdongubler/vim-sublime-monokai' " color scheme
 Plug 'nlknguyen/papercolor-theme' " color scheme
 Plug 'itchyny/lightline.vim' " Airline/Powerline replacement
 Plug 'scrooloose/nerdtree' " file explorer
-Plug 'Shougo/deoplete.nvim' " autocomplete
+"Plug 'ryanoasis/vim-devicons' " icons for Nerdtree
 Plug 'townk/vim-autoclose'
 Plug 'tpope/vim-ragtag' " tag closings
 Plug 'scrooloose/nerdcommenter' " commenting support
@@ -138,6 +142,8 @@ Plug 'cespare/vim-toml'
 Plug 'posva/vim-vue' " vue
 Plug 'maxmellon/vim-jsx-pretty' " jsx highlights
 Plug 'leafgarland/typescript-vim' " ts syntax
+Plug 'chr4/nginx.vim'
+Plug 'vim-python/python-syntax'
 
 Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
@@ -147,30 +153,30 @@ Plug 'autozimu/LanguageClient-neovim', {
 " (Optional) Multi-entry selection UI.
 Plug 'junegunn/fzf'
 
-Plug 'prettier/vim-prettier', {
-  \ 'do': 'yarn install',
-  \ 'branch': 'release/1.x',
-  \ 'for': [
-    \ 'javascript',
-    \ 'typescript',
-    \ 'css',
-    \ 'less',
-    \ 'scss',
-    \ 'json',
-    \ 'graphql',
-    \ 'markdown',
-    \ 'vue',
-    \ 'lua',
-    \ 'php',
-    \ 'python',
-    \ 'ruby',
-    \ 'html',
-    \ 'swift' ] }
+"Plug 'prettier/vim-prettier', {
+  "\ 'do': 'yarn install',
+  "\ 'branch': 'release/1.x',
+  "\ 'for': [
+    "\ 'javascript',
+    "\ 'typescript',
+    "\ 'css',
+    "\ 'less',
+    "\ 'scss',
+    "\ 'json',
+    "\ 'graphql',
+    "\ 'markdown',
+    "\ 'vue',
+    "\ 'lua',
+    "\ 'php',
+    "\ 'python',
+    "\ 'ruby',
+    "\ 'html',
+    "\ 'swift' ] }
 
 Plug 'junegunn/limelight.vim' " spotlight content in vim
 
 " Autocompletion
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 for coc_plugin in [
       \ 'fannheyward/coc-markdownlint',
       \ 'fannheyward/coc-texlab',
@@ -185,6 +191,9 @@ for coc_plugin in [
       \ ]
   Plug coc_plugin, { 'do': 'yarn install --frozen-lockfile' }
 endfor
+
+Plug 'wincent/ferret' " Search across files
+"Plug 'w0rp/ale'
 
 call plug#end()
 " }}}
@@ -209,19 +218,8 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 map <C-n> :NERDTreeToggle<CR>  
 " }}} 
 " autocomplete {{{
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
-let g:deoplete#enable_at_startup = 1
-
-let g:neosnippet#enable_completed_snippet = 1
-
 " <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+"inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 " }}}
 " vim-javascript {{{
 let g:javascript_plugin_jsdoc = 1
@@ -273,17 +271,21 @@ augroup tsx_recognition
   autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
 augroup END
 " }}}
+" Vim Python {{{
+let g:python_highlight_space_errors = 0
+let g:python_highlight_all = 1
+" }}}
 " ale {{{
-let g:ale_sign_error = '✖'
-let g:ale_sign_warning = '⚠'
-let g:ale_sign_info = 'ℹ'
-let g:ale_enabled = 0
-augroup mapping_ale_fix
-  autocmd FileType python,javascript,javascript.jsx,typescript,
-        \ nnoremap  <space>ap :ALEPreviousWrap<cr> |
-        \ nnoremap  <space>an :ALENextWrap<cr> |
-        \ nnoremap  <space>at :ALEToggle<cr>
-augroup END
+"let g:ale_sign_error = '✖'
+"let g:ale_sign_warning = '⚠'
+"let g:ale_sign_info = 'ℹ'
+"let g:ale_enabled = 0
+"augroup mapping_ale_fix
+  "autocmd FileType python,javascript,javascript.jsx,typescript,
+        "\ nnoremap  <space>ap :ALEPreviousWrap<cr> |
+        "\ nnoremap  <space>an :ALENextWrap<cr> |
+        "\ nnoremap  <space>at :ALEToggle<cr>
+"augroup END
 " }}}
 " echodoc {{{
 let g:echodoc#enable_at_startup = v:true
@@ -337,7 +339,7 @@ xmap <Leader>l <Plug>(Limelight)
 set secure
 " }}}
 " }}}
-" coc {{{
+" Coc {{{
 "
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
@@ -372,4 +374,7 @@ nmap <leader>rn <Plug>(coc-rename)
 " Scroll in floating window
 nnoremap <expr><C-e> coc#util#has_float() ? coc#util#float_scroll(1) : "\<C-e>"
 nnoremap <expr><C-y> coc#util#has_float() ? coc#util#float_scroll(0) : "\<C-y>"
+
+"let g:ale_completion_enabled = 1
+
 " }}}
