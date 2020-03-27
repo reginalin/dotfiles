@@ -7,13 +7,11 @@
 #export ZSH="/Users/reginalin/.oh-my-zsh"
 
 # for Linux
-export ZSH="/home/lregina/.oh-my-zsh"
 export CLICOLOR=1
+export VIRTUAL_ENV_DISABLE_PROMPT=0
 
 # Set name of the theme to load --- if set to "random", it will load a random theme each time oh-my-zsh is loaded, in which case, to know which specific one was loaded, run: echo $RANDOM_THEME See 
 # https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-
-ZSH_THEME="spaceship"
 
 DISABLE_LS_COLORS="true"
 
@@ -21,6 +19,20 @@ DISABLE_AUTO_TITLE="true"
 
 ENABLE_CORRECTION="true"
 
+# Geometry config {{{
+if [[ ! -v GEOMETRY_PROMPT_PLUGINS ]]; then
+  GEOMETRY_PROMPT_PLUGINS=(virtualenv exec_time git)
+fi
+
+GEOMETRY_STATUS_SYMBOL="▲"             # default prompt symbol
+GEOMETRY_STATUS_SYMBOL_ERROR="△"       # displayed when exit value is != 0
+GEOMETRY_STATUS_COLOR_ERROR="magenta"  # prompt symbol color when exit value is != 0
+GEOMETRY_STATUS_COLOR="default"        # prompt symbol color
+GEOMETRY_STATUS_COLOR_ROOT="red"       # root prompt symbol color
+GEOMETRY_COLOR_VIRTUALENV="green"
+
+setopt PROMPT_SUBST
+# }}}
 # Plugins {{{
 if [ -f ~/.zplug/init.zsh ]; then
   source ~/.zplug/init.zsh
@@ -47,13 +59,6 @@ if [ -f ~/.zplug/init.zsh ]; then
 else
   echo "zplug not installed, so no plugins available"
 fi
-# }}}
-# Geometry config {{{
-GEOMETRY_STATUS_SYMBOL="▲"             # default prompt symbol
-GEOMETRY_STATUS_SYMBOL_ERROR="△"       # displayed when exit value is != 0
-GEOMETRY_STATUS_COLOR_ERROR="magenta"  # prompt symbol color when exit value is != 0
-GEOMETRY_STATUS_COLOR="default"        # prompt symbol color
-GEOMETRY_STATUS_COLOR_ROOT="red"       # root prompt symbol color
 # }}}
 # Aliases {{{ Set personal aliases, overriding those provided by oh-my-zsh libs, plugins, and themes. Aliases can be placed here, though oh-my-zsh users are encouraged to define aliases within the ZSH_CUSTOM folder. For a full 
 # list of active aliases, run `alias`.
@@ -88,8 +93,8 @@ alias editt='vim ~/.tmux.conf'
 alias editz='vim ~/.zshrc'
 
 # virtual environment	
-alias ve='python3 -m venv venv' # create virtualenv
-alias va='source venv/bin/activate' # activate virtualenv
+ alias ve='python3 -m venv venv' # create virtualenv
+ alias va='source venv/bin/activate' # activate virtualenv
 
 # poetry spawn new shell
 alias poets='poetry shell'
@@ -143,51 +148,6 @@ motivate
 . $HOME/.asdf/asdf.sh
 
 . $HOME/.asdf/completions/asdf.bash
-# }}}
-# Spaceship prompt {{{
-SPACESHIP_PROMPT_ORDER=(
-  #time          # Time stamps section
-  user          # Username section
-  dir           # Current directory section
-  #host          # Hostname section
-  git           # Git section (git_branch + git_status)
-  #hg            # Mercurial section (hg_branch  + hg_status)
-  #package       # Package version
-  node          # Node.js section
-  #ruby          # Ruby section
-  #elixir        # Elixir section
-  #xcode         # Xcode section
-  #swift         # Swift section
-  golang        # Go section
-  #php           # PHP section
-  rust          # Rust section
-  #haskell       # Haskell Stack section
-  #julia         # Julia section
-  #docker        # Docker section
-  #aws           # Amazon Web Services section
-  venv          # virtualenv section
-  #conda         # conda virtualenv section
-  pyenv         # Pyenv section
-  #dotnet        # .NET section
-  #ember         # Ember.js section
-  #kubecontext   # Kubectl context section
-  terraform     # Terraform workspace section
-  exec_time     # Execution time
-  line_sep      # Line break
-  battery       # Battery level and status
-  #vi_mode       # Vi-mode indicator
-  #jobs          # Background jobs indicator
-  #exit_code     # Exit code section
-  char          # Prompt character
-)
- 
-SPACESHIP_USER_SHOW=always
-SPACESHIP_USER_SUFFIX=' ❄️  '
-
-SPACESHIP_GIT_BRANCH_PREFIX='🌱 ['
-SPACESHIP_GIT_BRANCH_SUFFIX=']'
-#SPACESHIP_GIT_STATUS_MODIFIED=''
-
 # }}}
 # Sourcing {{{
 
