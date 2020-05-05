@@ -122,6 +122,7 @@ Plug 'yggdroot/indentline'
 Plug 'pappasam/vim-filetype-formatter'
 Plug 'tpope/vim-surround' "add brackets around things ysiw* yss*
 Plug 'chiel92/vim-autoformat'
+Plug 'pappasam/nvim-repl' " repls
 
 " Javascript / Typescript
 Plug 'pangloss/vim-javascript' 
