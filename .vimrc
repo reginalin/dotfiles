@@ -120,7 +120,6 @@ Plug 'tpope/vim-ragtag' " tag closings
 Plug 'scrooloose/nerdcommenter' " commenting support
 Plug 'yggdroot/indentline'
 Plug 'pappasam/vim-filetype-formatter'
-Plug 'davidhalter/jedi-vim' "jump to definition
 Plug 'tpope/vim-surround' "add brackets around things ysiw* yss*
 Plug 'chiel92/vim-autoformat'
 
@@ -144,6 +143,7 @@ Plug 'maxmellon/vim-jsx-pretty' " jsx highlights
 Plug 'leafgarland/typescript-vim' " ts syntax
 Plug 'chr4/nginx.vim'
 Plug 'vim-python/python-syntax'
+Plug 'hashivim/vim-terraform'
 
 Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
@@ -177,17 +177,17 @@ Plug 'junegunn/limelight.vim' " spotlight content in vim
 
 " Autocompletion
 Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+      "\ 'fannheyward/coc-markdownlint',
+      "\ 'fannheyward/coc-texlab',
+      "\ 'neoclide/coc-html',
+      "\ 'neoclide/coc-css',
+      "\ 'neoclide/coc-json',
+      "\ 'neoclide/coc-rls',
+      "\ 'neoclide/coc-python',
+      "\ 'neoclide/coc-yaml',
+      "\ 'coc-extensions/coc-svelte',
 for coc_plugin in [
-      \ 'fannheyward/coc-markdownlint',
-      \ 'fannheyward/coc-texlab',
-      \ 'neoclide/coc-html',
-      \ 'neoclide/coc-css',
-      \ 'neoclide/coc-json',
-      \ 'neoclide/coc-python',
-      \ 'neoclide/coc-rls',
       \ 'neoclide/coc-tsserver',
-      \ 'neoclide/coc-yaml',
-      \ 'coc-extensions/coc-svelte',
       \ ]
   Plug coc_plugin, { 'do': 'yarn install --frozen-lockfile' }
 endfor
@@ -294,6 +294,15 @@ let g:echodoc#highlight_identifier = 'Identifier'
 let g:echodoc#highlight_arguments = 'QuickScopePrimary'
 let g:echodoc#highlight_trailing = 'Type'
 " }}}
+" Terraform {{{
+let g:terraform_align = 1
+
+let g:terraform_fold_sections = 0
+
+let g:terraform_fmt_on_save = 1
+
+let g:terraform_remap_spacebar = 1
+" }}}
 " Filetype formatter {{{
 let g:vim_filetype_formatter_commands = {
       \ 'text': 'poetry run textformat',
@@ -301,6 +310,7 @@ let g:vim_filetype_formatter_commands = {
       \ 'typescript': g:filetype_formatter#ft#formatters['javascript']['prettier'],
       \ 'typescript.tsx': g:filetype_formatter#ft#formatters['javascript']['prettier'],
       \ 'vue': g:filetype_formatter#ft#formatters['javascript']['prettier'],
+      \ 'terraform': 'terraform fmt',
       \ }
 " }}}
 " Language specific {{{
