@@ -154,43 +154,23 @@ Plug 'autozimu/LanguageClient-neovim', {
 " (Optional) Multi-entry selection UI.
 Plug 'junegunn/fzf'
 
-"Plug 'prettier/vim-prettier', {
-  "\ 'do': 'yarn install',
-  "\ 'branch': 'release/1.x',
-  "\ 'for': [
-    "\ 'javascript',
-    "\ 'typescript',
-    "\ 'css',
-    "\ 'less',
-    "\ 'scss',
-    "\ 'json',
-    "\ 'graphql',
-    "\ 'markdown',
-    "\ 'vue',
-    "\ 'lua',
-    "\ 'php',
-    "\ 'python',
-    "\ 'ruby',
-    "\ 'html',
-    "\ 'swift' ] }
-
 Plug 'junegunn/limelight.vim' " spotlight content in vim
 
 " Autocompletion
-Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
-      "\ 'fannheyward/coc-markdownlint',
-      "\ 'fannheyward/coc-texlab',
-      "\ 'neoclide/coc-html',
-      "\ 'neoclide/coc-css',
-      "\ 'neoclide/coc-json',
-      "\ 'neoclide/coc-rls',
-      "\ 'neoclide/coc-python',
-      "\ 'neoclide/coc-yaml',
-      "\ 'coc-extensions/coc-svelte',
+Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile && yarn build'}
 for coc_plugin in [
+      \ 'fannheyward/coc-markdownlint',
+      \ 'fannheyward/coc-texlab',
+      \ 'neoclide/coc-html',
+      \ 'neoclide/coc-css',
+      \ 'neoclide/coc-json',
+      \ 'neoclide/coc-rls',
+      \ 'neoclide/coc-yaml',
+      \ 'coc-extensions/coc-svelte',
+      \ 'pappasam/coc-jedi',
       \ 'neoclide/coc-tsserver',
       \ ]
-  Plug coc_plugin, { 'do': 'yarn install --frozen-lockfile' }
+  Plug coc_plugin, { 'do': 'yarn install --frozen-lockfile && yarn build' }
 endfor
 
 Plug 'wincent/ferret' " Search across files
