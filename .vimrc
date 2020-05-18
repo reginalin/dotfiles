@@ -155,9 +155,11 @@ Plug 'autozimu/LanguageClient-neovim', {
 Plug 'junegunn/fzf'
 
 Plug 'junegunn/limelight.vim' " spotlight content in vim
+Plug 'junegunn/goyo.vim'
 
 " Autocompletion
 Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile && yarn build'}
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
 for coc_plugin in [
       \ 'fannheyward/coc-markdownlint',
       \ 'fannheyward/coc-texlab',
@@ -174,7 +176,10 @@ for coc_plugin in [
 endfor
 
 Plug 'wincent/ferret' " Search across files
-"Plug 'w0rp/ale'
+
+" Markdown 
+Plug 'dkarter/bullets.vim'
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
 
 call plug#end()
 " }}}
@@ -299,18 +304,18 @@ set expandtab shiftwidth=2 softtabstop=2 tabstop=8
 augroup indentation_sr
   autocmd!
   autocmd Filetype python,c,haskell,markdown,rust,rst,kv,nginx,asm,nasm,gdscript3
-        \ setlocal shiftwidth=4 softtabstop=4 tabstop=8
+        \ setlocal shiftwidth=4 softtabstop=4 tabstop=8 wrap
   autocmd Filetype dot setlocal autoindent cindent
   autocmd Filetype make,tsv,votl,go
         \ setlocal tabstop=4 softtabstop=0 shiftwidth=4 noexpandtab
   " Prevent auto-indenting from occuring
   autocmd Filetype yaml setlocal indentkeys-=<:>
-  autocmd FileType javascript set sw=2 ts=2 sts=2
+  autocmd FileType javascript set sw=2 ts=2 sts=2 wrap
   autocmd FileType json set sw=2 ts=2 sts=2
   autocmd FileType html set sw=2 ts=2 sts=2
   autocmd FileType css set sw=2 ts=2 sts=2
   autocmd FileType yaml set sw=2 ts=2 sts=2
-  autocmd FileType md set sw=2 ts=2 sts=2
+  "autocmd FileType md set sw=2 ts=2 sts=2
 
   autocmd Filetype ron setlocal cindent
         \ cinkeys=0{,0},0(,0),0[,0],:,0#,!^F,o,O,e
@@ -369,3 +374,91 @@ nnoremap <expr><C-y> coc#util#has_float() ? coc#util#float_scroll(0) : "\<C-y>"
 "let g:ale_completion_enabled = 1
 
 " }}}
+" Markdown {{
+" Notes:
+" Hard-wrap lines: 'gq'
+" Soft-wrap hard-wrapped lines: 'J' during visual selection
+
+" Single Space After Punctuation: useful when doing :%j (the opposite of gq)
+set nojoinspaces
+
+" Indentation and line wrapping
+autocmd FileType markdown
+      \ setlocal expandtab shiftwidth=2 softtabstop=2 tabstop=8 wrap linebreak nolist colorcolumn=0 nofoldenable
+
+" MoveVisual: up and down visually only if count is specified before
+" Otherwise, you want to move up lines numerically e.g. ignore wrapped lines
+" note: gk and gj are visual moves supported in vim by default
+nnoremap <expr> k
+      \ v:count == 0 ? 'gk' : 'k'
+vnoremap <expr> k
+      \ v:count == 0 ? 'gk' : 'k'
+nnoremap <expr> j
+      \ v:count == 0 ? 'gj' : 'j'
+vnoremap <expr> j
+      \ v:count == 0 ? 'gj' : 'j'
+
+" J: basically, unmap in normal mode unless range explicitly specified
+" This will prevent all sorts of annoyance
+nnoremap <silent> <expr> J v:count == 0 ? '<esc>' : 'J'
+
+" Plugin: vim-markdown
+let g:vim_markdown_frontmatter = v:true
+let g:vim_markdown_toml_frontmatter = v:true
+let g:vim_markdown_json_frontmatter = v:true
+let g:vim_markdown_no_default_key_mappings = v:true
+let g:vim_markdown_strikethrough = v:true
+let g:vim_markdown_folding_disabled = v:true
+let g:vim_markdown_auto_insert_bullets = v:false
+let g:vim_markdown_new_list_item_indent = v:false
+
+" Plugin: bullets.vim
+let g:bullets_enabled_file_types = [
+      \ 'markdown',
+      \ 'text',
+      \ 'gitcommit',
+      \ 'scratch',
+      \ 'rst',
+      \ ]
+
+" Plugin: Markdown-preview.vim
+" Gives you command :MarkdownPreview
+
+let g:mkdp_auto_start = v:false
+let g:mkdp_auto_close = v:false
+
+" set to 1, the vim will just refresh markdown when save the buffer or
+" leave from insert mode, default 0 is auto refresh markdown as you edit or
+" move the cursor
+" default: 0
+let g:mkdp_refresh_slow = v:false
+
+" set to 1, the MarkdownPreview command can be use for all files,
+" by default it just can be use in markdown file
+" default: 0
+let g:mkdp_command_for_global = v:false
+
+" a custom vim function name to open preview page
+" this function will receive url as param
+" default is empty
+let g:mkdp_browserfunc = ''
+
+" options for markdown render
+" mkit: markdown-it options for render
+" katex: katex options for math
+" uml: markdown-it-plantuml options
+" maid: mermaid options
+" disable_sync_scroll: if disable sync scroll, default 0
+" sync_scroll_type: 'middle', 'top' or 'relative', default value is 'middle'
+"   middle: mean the cursor position alway show at the middle of the preview page
+"   top: mean the vim top viewport alway show at the top of the preview page
+"   relative: mean the cursor position alway show at the relative positon of the preview page
+let g:mkdp_preview_options = {
+      \ 'mkit': {},
+      \ 'katex': {},
+      \ 'uml': {},
+      \ 'maid': {},
+      \ 'disable_sync_scroll': 0,
+      \ 'sync_scroll_type': 'middle'
+      \ }
+" }}
