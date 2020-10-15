@@ -151,6 +151,8 @@ Plug 'leafgarland/typescript-vim' " ts syntax
 Plug 'chr4/nginx.vim'
 Plug 'vim-python/python-syntax'
 Plug 'hashivim/vim-terraform'
+"'martinda/Jenkinsfile-vim-syntax'
+Plug 'vim-scripts/groovyindent-unix'
 
 Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
@@ -406,6 +408,20 @@ command! -bang -nargs=* GGrep
   \   'git grep --line-number '.shellescape(<q-args>), 0,
   \   fzf#vim#with_preview({'dir': systemlist('git rev-parse --show-toplevel')[0]}), <bang>0)
 " }}}
+" Preview {{{
+function! s:preview()
+  if &filetype ==? 'markdown'
+    " from markdown-preview.vim
+    exec 'MarkdownPreview'
+  elseif &filetype ==? 'html'
+    exec 'silent !google-chrome % &'
+  else
+    echo 'Preview not supported for this filetype'
+  endif
+endfunction
+
+command! Preview call <SID>preview()
+" }}}
 " }}}
 " Coc {{{
 "
@@ -449,7 +465,7 @@ nnoremap <expr><C-y> coc#util#has_float() ? coc#util#float_scroll(0) : "\<C-y>"
 "let g:coc_disable_startup_warning = 1
 
 " }}}
-" Markdown {{
+" Markdown {{{
 " Notes:
 " Hard-wrap lines: 'gq'
 " Soft-wrap hard-wrapped lines: 'J' during visual selection
@@ -460,6 +476,8 @@ set nojoinspaces
 " Indentation and line wrapping
 autocmd FileType markdown
       \ setlocal expandtab shiftwidth=2 softtabstop=2 tabstop=8 wrap linebreak nolist colorcolumn=0 nofoldenable
+
+autocmd FileType markdown setlocal spell spelllang=en_gb
 
 " MoveVisual: up and down visually only if count is specified before
 " Otherwise, you want to move up lines numerically e.g. ignore wrapped lines
@@ -536,4 +554,4 @@ let g:mkdp_preview_options = {
       \ 'disable_sync_scroll': 0,
       \ 'sync_scroll_type': 'middle'
       \ }
-" }}
+" }}}
