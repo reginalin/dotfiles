@@ -116,7 +116,6 @@ Plug 'itchyny/lightline.vim' " Airline/Powerline replacement
 Plug 'scrooloose/nerdtree' " file explorer
 "Plug 'ryanoasis/vim-devicons' " icons for Nerdtree
 Plug 'townk/vim-autoclose'
-Plug 'tpope/vim-ragtag' " tag closings
 Plug 'scrooloose/nerdcommenter' " commenting support
 Plug 'yggdroot/indentline'
 Plug 'pappasam/vim-filetype-formatter'
@@ -136,8 +135,10 @@ Plug 'peitalin/vim-jsx-typescript'
 Plug 'wokalski/autocomplete-flow'
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
-Plug 'Valloric/MatchTagAlways'
 Plug 'beautify-web/js-beautify' "formatter for js
+Plug 'Valloric/MatchTagAlways'
+Plug 'tpope/vim-ragtag' " tag closings
+Plug 'alvan/vim-closetag'
 
 " Language specific highlighting
 Plug 'khalliday7/Jenkinsfile-vim-syntax'
@@ -421,6 +422,41 @@ function! s:preview()
 endfunction
 
 command! Preview call <SID>preview()
+" }}}
+" closetag {{{
+" filenames like *.xml, *.html, *.xhtml, ...
+" These are the file extensions where this plugin is enabled.
+"
+let g:closetag_filenames = '*.html,*.xhtml,*.js,*.jsx,*.vue,*.ts,*tsx'
+
+" filetypes like xml, html, xhtml, ...
+" These are the file types where this plugin is enabled.
+"
+let g:closetag_filetypes = 'html,xhtml,javascript,javascript.jsx,jsx,vue,typescript,typescript.tsx'
+
+" integer value [0|1]
+" This will make the list of non-closing tags case-sensitive
+" (e.g. `<Link>` will be closed while `<link>` won't.)
+"
+let g:closetag_emptyTags_caseSensitive = 1
+
+" dict
+" Disables auto-close if not in a "valid" region (based on filetype)
+"
+let g:closetag_regions = {
+    \ 'javascript': 'jsxRegion',
+    \ 'javascript.jsx': 'jsxRegion',
+    \ 'typescript': 'jsxRegion,tsxRegion',
+    \ 'typescript.tsx': 'jsxRegion,tsxRegion',
+    \ }
+
+" Shortcut for closing tags, default is '>'
+"
+let g:closetag_shortcut = '>'
+
+" Add > at current position without closing the current tag, default is ''
+"
+let g:closetag_close_shortcut = '<leader>>'
 " }}}
 " }}}
 " Coc {{{
