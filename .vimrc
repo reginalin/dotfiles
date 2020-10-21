@@ -71,6 +71,8 @@ augroup filetype_recognition
   autocmd BufNewFile,BufRead,BufEnter *.handlebars set filetype=html
   autocmd BufNewFile,BufRead,BufEnter *.m,*.oct set filetype=octave
   autocmd BufNewFile,BufRead,BufEnter *.jsx set filetype=javascript
+  autocmd BufNewFile,BufRead,BufEnter *.ts, set filetype=typescript.tsx
+  autocmd BufNewFile,BufRead,BufEnter *.tsx, set filetype=typescript.tsx
   autocmd BufNewFile,BufRead,BufEnter *.gs set filetype=javascript
   autocmd BufNewFile,BufRead,BufEnter *.cfg,*.ini,.coveragerc,*pylintrc
         \ set filetype=dosini
@@ -180,6 +182,7 @@ for coc_plugin in [
       \ 'coc-extensions/coc-svelte',
       \ 'pappasam/coc-jedi',
       \ 'neoclide/coc-tsserver',
+      \ 'neoclide/coc-eslint',
       \ 'davidroeca/coc-svelte-language-tools'
       \ ]
   Plug coc_plugin, { 'do': 'yarn install --frozen-lockfile && yarn build' }
@@ -251,21 +254,6 @@ let g:mta_filetypes = {
 let g:indentLine_enabled = 1
 let g:indentLine_color_term = 239
 "let g:indentLine_char = '|'
-" }}}
-" filetype recognition{{{
-augroup js_recognition
-  autocmd!
-  autocmd BufNewFile,BufFilePre,BufRead *.gs set filetype=javascript
-  autocmd BufNewFile,BufFilePre,BufRead *.js.flow set filetype=javascript
-augroup END
-augroup jsx_recognition
-  autocmd!
-  autocmd BufNewFile,BufFilePre,BufRead *.jsx set filetype=javascript.jsx
-augroup END
-augroup tsx_recognition
-  autocmd!
-  autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
-augroup END
 " }}}
 " Vim Python {{{
 let g:python_highlight_space_errors = 0
