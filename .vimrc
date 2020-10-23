@@ -25,7 +25,6 @@ function! SetGlobalConfig()
   set noswapfile
   set nowrap " Line Wrapping: do not wrap lines by default
   set showtabline=2
-  set relativenumber 
   set number
   set foldmethod=marker " Folding
   set cursorline " Line highlights 
