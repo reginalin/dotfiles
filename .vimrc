@@ -69,6 +69,7 @@ augroup filetype_recognition
   autocmd BufNewFile,BufRead,BufEnter *.asm set filetype=nasm
   autocmd BufNewFile,BufRead,BufEnter *.handlebars set filetype=html
   autocmd BufNewFile,BufRead,BufEnter *.m,*.oct set filetype=octave
+  autocmd BufNewFile,BufRead,BufEnter *.js set filetype=javascript
   autocmd BufNewFile,BufRead,BufEnter *.jsx set filetype=javascript
   autocmd BufNewFile,BufRead,BufEnter *.ts, set filetype=typescript.tsx
   autocmd BufNewFile,BufRead,BufEnter *.tsx, set filetype=typescript.tsx
@@ -113,6 +114,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'erichdongubler/vim-sublime-monokai' " color scheme
 Plug 'nlknguyen/papercolor-theme' " color scheme
+Plug 'sainnhe/sonokai'
 Plug 'itchyny/lightline.vim' " Airline/Powerline replacement
 Plug 'scrooloose/nerdtree' " file explorer
 "Plug 'ryanoasis/vim-devicons' " icons for Nerdtree
@@ -153,22 +155,21 @@ Plug 'leafgarland/typescript-vim' " ts syntax
 Plug 'chr4/nginx.vim'
 Plug 'vim-python/python-syntax'
 Plug 'hashivim/vim-terraform'
-"'martinda/Jenkinsfile-vim-syntax'
 Plug 'vim-scripts/groovyindent-unix'
+Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'pappasam/papercolor-theme-slim'
 
 Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': 'bash install.sh',
     \ }
 
-" (Optional) Multi-entry selection UI.
-Plug 'junegunn/fzf'
 
 Plug 'junegunn/limelight.vim' " spotlight content in vim
 Plug 'junegunn/goyo.vim'
 
 " Autocompletion
-Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile && yarn build'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
 for coc_plugin in [
       \ 'fannheyward/coc-markdownlint',
@@ -184,7 +185,7 @@ for coc_plugin in [
       \ 'neoclide/coc-eslint',
       \ 'davidroeca/coc-svelte-language-tools'
       \ ]
-  Plug coc_plugin, { 'do': 'yarn install --frozen-lockfile && yarn build' }
+  Plug coc_plugin, {'do': 'yarn install --frozen-lockfile'}
 endfor
 
 Plug 'wincent/ferret' " Search across files
@@ -198,11 +199,13 @@ call plug#end()
 " Plugin Configurations: Vim-Plug {{{
 " color scheme {{{
 "syntax on 
-"colorscheme sublimemonokai
+"colorscheme molokai
 "
-set t_Co=256   " This is may or may not needed.
+set t_Co=256
 set background=dark
-colorscheme PaperColor
+"colorscheme sublimemonokai
+"colorscheme sonokai
+colorscheme PaperColorSlim
 " }}}
 " nerdtree {{{
 " open on startup
@@ -402,7 +405,8 @@ function! s:preview()
     " from markdown-preview.vim
     exec 'MarkdownPreview'
   elseif &filetype ==? 'html'
-    exec 'silent !google-chrome % &'
+    "exec 'silent !google-chrome % &'
+    exec 'silent !firefox % &'
   else
     echo 'Preview not supported for this filetype'
   endif
@@ -444,6 +448,33 @@ let g:closetag_shortcut = '>'
 " Add > at current position without closing the current tag, default is ''
 "
 let g:closetag_close_shortcut = '<leader>>'
+" }}}
+" treesitter (highlighting) {{{
+function! HandleVimEnter()
+lua <<EOF
+require('nvim-treesitter.configs').setup {
+  ensure_installed = {
+    'python',
+    'javascript',
+    'typescript',
+    'tsx',
+    'html',
+    'css',
+    'json',
+    'yaml',
+    'toml',
+    'bash',
+  },
+  highlight = {
+    enable = true, 
+    disable = {},
+  },
+}
+EOF
+endfunction
+augroup vimenter
+  autocmd! VimEnter * call HandleVimEnter()
+augroup END
 " }}}
 " }}}
 " Coc {{{
