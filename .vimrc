@@ -156,7 +156,7 @@ Plug 'chr4/nginx.vim'
 Plug 'vim-python/python-syntax'
 Plug 'hashivim/vim-terraform'
 Plug 'vim-scripts/groovyindent-unix'
-Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  
 Plug 'pappasam/papercolor-theme-slim'
 
 Plug 'autozimu/LanguageClient-neovim', {
