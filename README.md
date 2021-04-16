@@ -1,10 +1,8 @@
 # dotfiles
 
-My dotfiles.
+All of my dotfiles
 
-Managed by [GNU Stow](https://www.gnu.org/software/stow/) (automates the placement of symbolic links in the home directory).
-
-To set up, run `make`.
+[GNU Stow](https://www.gnu.org/software/stow/) is used to automate the placement of symbolic links in the home directory).
 
 ```
 # Install stow
