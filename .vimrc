@@ -7,7 +7,6 @@
 "    	https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 "
 " Folding:
-" zi: toggles everything ??? 
 " za: toggles current selection
 
 " General: Global config {{{
@@ -29,8 +28,6 @@ function! SetGlobalConfig()
   set foldmethod=marker " Folding
   set cursorline " Line highlights 
   set notimeout " don't timeout on mappings
-  " do timeout on terminal key codes
-  "set ttimeout
   set tabstop=2
   set softtabstop=2
   set shiftwidth=2
@@ -114,8 +111,8 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'erichdongubler/vim-sublime-monokai' " color scheme
 Plug 'nlknguyen/papercolor-theme' " color scheme
+Plug 'sainnhe/edge'
 Plug 'sainnhe/sonokai'
-Plug 'itchyny/lightline.vim' " Airline/Powerline replacement
 Plug 'scrooloose/nerdtree' " file explorer
 "Plug 'ryanoasis/vim-devicons' " icons for Nerdtree
 Plug 'townk/vim-autoclose'
@@ -156,6 +153,9 @@ Plug 'chr4/nginx.vim'
 Plug 'vim-python/python-syntax'
 Plug 'hashivim/vim-terraform'
 Plug 'vim-scripts/groovyindent-unix'
+Plug 'ekalinin/Dockerfile.vim'
+
+
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  
 Plug 'pappasam/papercolor-theme-slim'
 
@@ -171,22 +171,6 @@ Plug 'junegunn/goyo.vim'
 " Autocompletion
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
-for coc_plugin in [
-      \ 'fannheyward/coc-markdownlint',
-      \ 'fannheyward/coc-texlab',
-      \ 'neoclide/coc-html',
-      \ 'neoclide/coc-css',
-      \ 'neoclide/coc-json',
-      \ 'neoclide/coc-rls',
-      \ 'neoclide/coc-yaml',
-      \ 'coc-extensions/coc-svelte',
-      \ 'pappasam/coc-jedi',
-      \ 'neoclide/coc-tsserver',
-      \ 'neoclide/coc-eslint',
-      \ 'davidroeca/coc-svelte-language-tools'
-      \ ]
-  Plug coc_plugin, {'do': 'yarn install --frozen-lockfile'}
-endfor
 
 Plug 'wincent/ferret' " Search across files
 
@@ -198,14 +182,37 @@ call plug#end()
 " }}}
 " Plugin Configurations: Vim-Plug {{{
 " color scheme {{{
-"syntax on 
-"colorscheme molokai
 "
 set t_Co=256
 set background=dark
 "colorscheme sublimemonokai
 "colorscheme sonokai
 colorscheme PaperColorSlim
+"colorscheme edge
+let g:edge_better_performance = 1
+
+function! Light()
+    echom "set bg=light"
+    set bg=light
+    colorscheme edge
+    let g:lightline = {'colorscheme' : 'edge'}
+endfunction
+
+function! Dark()
+    echom "set bg=dark"
+    set bg=dark
+    colorscheme PaperColorSlim
+endfunction
+
+function! ToggleLightDark()
+  if &bg ==# "light"
+    call Dark()
+  else
+    call Light()
+  endif
+endfunction
+
+nnoremap <leader>c :call ToggleLightDark()<CR>
 " }}}
 " nerdtree {{{
 " open on startup
@@ -478,6 +485,35 @@ augroup END
 " }}}
 " }}}
 " Coc {{{
+" Coc global extensions: automatically installed on vim open
+let g:coc_global_extensions = [
+      \ 'coc-angular',
+      \ 'coc-css',
+      \ 'coc-diagnostic',
+      \ 'coc-dictionary',
+      \ 'coc-docker',
+      \ 'coc-emoji',
+      \ 'coc-go',
+      \ 'coc-html',
+      \ 'coc-java',
+      \ 'coc-json',
+      \ 'coc-lists',
+      \ 'coc-markdownlint',
+      \ 'coc-pairs',
+      \ 'coc-rls',
+      \ 'coc-sh',
+      \ 'coc-snippets',
+      \ 'coc-spell-checker',
+      \ 'coc-svelte',
+      \ 'coc-svg',
+      \ 'coc-syntax',
+      \ 'coc-texlab',
+      \ 'coc-tsserver',
+      \ 'coc-vimlsp',
+      \ 'coc-word',
+      \ 'coc-yaml',
+      \ ]
+
 "
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
@@ -501,10 +537,6 @@ function! s:show_documentation()
 endfunction
 
 nmap <silent> <C-]> <Plug>(coc-definition)
-nnoremap <silent> <C-K> :call <SID>show_documentation()<CR>
-
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh() 
 
 " Remap for rename current word
 nmap <leader>rn <Plug>(coc-rename)
@@ -513,10 +545,29 @@ nmap <leader>rn <Plug>(coc-rename)
 nnoremap <expr><C-e> coc#util#has_float() ? coc#util#float_scroll(1) : "\<C-e>"
 nnoremap <expr><C-y> coc#util#has_float() ? coc#util#float_scroll(0) : "\<C-y>"
 
-"let g:ale_completion_enabled = 1
-"
-" TO DO: Remove this when we fix neovim update issues
-"let g:coc_disable_startup_warning = 1
+function! s:default_key_mappings()
+  " Hover
+  nnoremap <silent> <C-K> :call <SID>show_documentation()<CR>
+
+  " Scroll inside hover
+  nnoremap <silent><nowait><expr> <C-e> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-e>"
+  nnoremap <silent><nowait><expr> <C-y> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-y>"
+  inoremap <silent><nowait><expr> <C-e> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<C-e>"
+  inoremap <silent><nowait><expr> <C-y> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<C-y>"
+  vnoremap <silent><nowait><expr> <C-e> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-e>"
+  vnoremap <silent><nowait><expr> <C-y> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-y>"
+
+  " Use <c-space> to trigger completion.
+  inoremap <silent><expr> <c-space> coc#refresh() 
+
+  " Toggle diagnostics for all buffers (includes pylint, etc)
+  nnoremap                 <leader>d <cmd>call CocActionAsync('diagnosticToggle')<CR>
+  nmap     <silent>        ]g <Plug>(coc-diagnostic-next)
+  nmap     <silent>        [g <Plug>(coc-diagnostic-prev)
+
+endfunction
+
+call s:default_key_mappings()
 
 " }}}
 " Markdown {{{
@@ -608,4 +659,12 @@ let g:mkdp_preview_options = {
       \ 'disable_sync_scroll': 0,
       \ 'sync_scroll_type': 'middle'
       \ }
+" }}}
+" nginx {{{
+" complete / hover correcty:
+augroup custom_nginx
+  autocmd!
+  autocmd FileType nginx set iskeyword+=$
+  autocmd FileType nginx let b:coc_additional_keywords = ['$']
+augroup end
 " }}}

@@ -1,25 +1,39 @@
-# If you come from bash you might have to change your $PATH. 
-#export PATH=$HOME/bin:/usr/local/bin:$PATH
+# Environ {{{
 
-# Path to your oh-my-zsh installation.
-
-# for Mac
-#export ZSH="/Users/reginalin/.oh-my-zsh"
-
-# for Linux
 export CLICOLOR=1
 export VIRTUAL_ENV_DISABLE_PROMPT=0
-
-# Set name of the theme to load --- if set to "random", it will load a random theme each time oh-my-zsh is loaded, in which case, to know which specific one was loaded, run: echo $RANDOM_THEME See 
-# https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-
-DISABLE_LS_COLORS="true"
-
-DISABLE_AUTO_TITLE="true" 
-
 ENABLE_CORRECTION="true"
 
-# Geometry config {{{
+# Configure man pages
+
+export MANWIDTH=79
+
+# }}}
+# Dark/light mode {{{
+ 
+function dark() {
+  alacritty-colorscheme \
+    -c $HOME/.alacritty.yml \
+    apply ayu_dark.yaml
+
+  if [ ! -z "$TMUX" ]; then
+    tmux source-file ~/.tmux.conf
+  fi
+}
+
+function light() {
+  alacritty-colorscheme \
+    -c $HOME/.alacritty.yml \
+    apply papercolor_light.yaml
+
+  if [ ! -z "$TMUX" ]; then
+    tmux source-file ~/.tmux-light
+  fi
+}
+
+# }}}
+# Zshell: shell prompt config {{{
+
 if [[ ! -v GEOMETRY_PROMPT_PLUGINS ]]; then
   GEOMETRY_PROMPT_PLUGINS=(virtualenv exec_time git)
 fi
@@ -32,8 +46,9 @@ GEOMETRY_STATUS_COLOR_ROOT="red"       # root prompt symbol color
 GEOMETRY_COLOR_VIRTUALENV="green"
 
 setopt PROMPT_SUBST
+
 # }}}
-# Plugins {{{
+# Zshell: plugins {{{
 if [ -f ~/.zplug/init.zsh ]; then
   source ~/.zplug/init.zsh
 
@@ -60,70 +75,15 @@ else
   echo "zplug not installed, so no plugins available"
 fi
 # }}}
-# Aliases {{{ Set personal aliases, overriding those provided by oh-my-zsh libs, plugins, and themes. Aliases can be placed here, though oh-my-zsh users are encouraged to define aliases within the ZSH_CUSTOM folder. For a full 
-# list of active aliases, run `alias`.
-#
-# Example aliases alias zshconfig="mate ~/.zshrc" alias ohmyzsh="mate ~/.oh-my-zsh"
+# Zshell: startup config {{{
 
-# USEFUL aliases {{{
-# Run neovim (on Linux)
-alias nvim='~/tools/nvim.appimage'
-
-# Remap vim to neovim
-alias f='nvim'
-alias vi='nvim'
-alias vim='nvim'
-
-# Get sublime color theme to work in tmux
-alias tmux='tmux -2'
-
-# Clear
-alias c='clear'
-
-# Reload zshrc
-alias sz='source ~/.zshrc'
-
-# open vim anywhere
-alias editv='vim ~/.vimrc'
-
-# open tmux anywhere
-alias editt='vim ~/.tmux.conf'
-
-# open zshrc anywhere
-alias editz='vim ~/.zshrc'
-
-# virtual environment	
- alias ve='python3 -m venv venv' # create virtualenv
- alias va='source venv/bin/activate' # activate virtualenv
-
-# poetry spawn new shell
-alias poets='poetry shell'
-
-# Kepler
-alias rocket='cd ~/KIP-Rocket'
-alias kepler='cd ~/Kepler'
-
-# git
-alias gg='git log --oneline --abbrev-commit --all --graph --decorate'
-# }}}
-# FUN aliases {{{
-# Weather
 alias weather='curl wttr.in'
-
-# Cowsay 
 alias cow='cowsay hello'
-
-# Motivational thinking unicorn 
 alias motivate='motivate --no-colors | cowthink -f unipony-smaller' 
-
-# Make fortunes colorful
 alias fortune='fortune | lolcat'
-# }}}
-# }}}
-# Fun start up stuff {{{
 
-# Figlet bold fonts
 greeting="good morning"
+
 time=$(date +%H)
 if [ $((time)) -lt 12 ]; then
   greeting="good morning"
@@ -133,31 +93,81 @@ else
   greeting="good evening"
 fi
 
-# figlet $greeting | lolcat
 figlet $greeting
 
-# Motivational rainbow animal 
 MOTIVATION=$(motivate)
 CLEAN_MOTIVATION=${MOTIVATION[@]//\[1;m/}
-#echo $CLEAN_MOTIVATION | lolcat
+
 motivate
 
 # }}}
-# asdf {{{
-. $HOME/.asdf/asdf.sh
+# Functions {{{
 
-. $HOME/.asdf/completions/asdf.bash
+function include() {
+  [[ -f "$1" ]] && source "$1"
+}
 
-. $HOME/.asdf/asdf.sh
+# }}}
+# Aliases {{{
+# To see list of active aliases, run `alias`.
+alias nvim='~/tools/nvim.appimage'
+alias f='nvim'
+alias vi='nvim'
+alias vim='nvim'
+alias c='clear'
+alias sz='source ~/.zshrc' # reload zshrc
+alias editv='vim ~/.vimrc'
+alias editt='vim ~/.tmux.conf'
+alias editz='vim ~/.zshrc'
 
-. $HOME/.asdf/completions/asdf.bash
+# Python
+alias ve='python3 -m venv venv' # create virtualenv
+alias va='source venv/bin/activate' # activate virtualenv
+
+# Git
+alias gg='git log --oneline --abbrev-commit --all --graph --decorate'
+
+# Kepler
+alias rocket='cd ~/KIP-Rocket'
+alias kepler='cd ~/Kepler'
+
+# Join zoom and get correct audio input
+function active_input_port() {
+  pactl list sources | grep 'Active Port:' | cut -d ':' -f 2 | xargs
+}
+
+function check_input_port() {
+  local SOURCE="alsa_input.pci-0000_00_1f.3.analog-stereo"
+  local DESIRED_INPUT="analog-input-headset-mic"
+  local current=$(active_input_port)
+  if [ "$current" != "$DESIRED_INPUT" ]; then
+    echo "Changing active port from '$current' to '$DESIRED_INPUT'"
+    pactl set-source-port $SOURCE $DESIRED_INPUT
+    if [ $? -ne 0 ]; then
+      echo "Failed to configure the source port: $DESIRED_INPUT. Maybe not connected?"
+      return 1
+    fi
+  fi
+}
+function zoomy() {
+  check_input_port
+  xdg-open "zoommtg://zoom.us/join?action=join&confno=$1" > /dev/null 2>&1
+}
+
+fpath+=${ZDOTDIR:-~}/.zsh_functions
+
 # }}}
 # Sourcing {{{
 
-include() {
-  [[ -f "$1" ]] && source "$1"
-}
 include ~/.bash/sensitive
+include ~/.fzf.zsh
+
+# }}}
+# Imports: asdf (needs to run after zsh setup) {{{
+
+include $HOME/.asdf/asdf.sh
+include $HOME/.asdf/completions/asdf.bash
+
 # }}}
 # Git {{{
 # GIT: prune/cleanup the local references to remote branch
@@ -180,7 +190,6 @@ function gc() {
     git remote prune origin
     echo "Pruned!"
   fi
-​
   local branches="$(git branch --merged master | grep -v '^[ *]*master$')"
   if [ -z "$branches" ]
   then
@@ -226,33 +235,5 @@ function gitignore() {
   fi
 }
 compdef "_files -W $GITIGNORE_DIR/" gitignore
+
 # }}}
-
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-function active_input_port() {
-  pactl list sources | grep 'Active Port:' | cut -d ':' -f 2 | xargs
-}
-
-function check_input_port() {
-  local SOURCE="alsa_input.pci-0000_00_1f.3.analog-stereo"
-  local DESIRED_INPUT="analog-input-headset-mic"
-  local current=$(active_input_port)
-  if [ "$current" != "$DESIRED_INPUT" ]; then
-    echo "Changing active port from '$current' to '$DESIRED_INPUT'"
-    pactl set-source-port $SOURCE $DESIRED_INPUT
-    if [ $? -ne 0 ]; then
-      echo "Failed to configure the source port: $DESIRED_INPUT. Maybe not connected?"
-      return 1
-    fi
-  fi
-}
-function zoomy() {
-  check_input_port
-  xdg-open "zoommtg://zoom.us/join?action=join&confno=$1" > /dev/null 2>&1
-}
-# Aliases
-alias jm="zoomy 9279165538" # join tds channel
-alias jrl="zoomy 5407559846"
