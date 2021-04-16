@@ -1,0 +1,7 @@
+[user]
+  email = reginalin714@gmail.com
+  name = Regina
+[alias]
+  hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+[core]
+  editor = ~/tools/nvim.appimage
