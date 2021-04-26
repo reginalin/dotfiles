@@ -116,7 +116,7 @@ alias vi='nvim'
 alias vim='nvim'
 alias c='clear'
 alias sz='source ~/.zshrc' # reload zshrc
-alias editv='vim ~/.vimrc'
+alias editv='vim ~/.config/nvim/init.vim'
 alias editt='vim ~/.tmux.conf'
 alias editz='vim ~/.zshrc'
 
