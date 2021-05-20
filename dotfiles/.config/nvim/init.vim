@@ -485,6 +485,11 @@ augroup END
 " }}}
 " }}}
 " Coc {{{
+
+let g:coc_filetype_map = {
+      \ 'yaml.docker-compose': 'yaml',
+      \ }
+
 " Coc global extensions: automatically installed on vim open
 let g:coc_global_extensions = [
       \ 'coc-angular',
