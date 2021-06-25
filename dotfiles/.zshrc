@@ -159,7 +159,7 @@ fpath+=${ZDOTDIR:-~}/.zsh_functions
 # }}}
 # Sourcing {{{
 
-include ~/.bash/sensitive
+include ~/.sensitive
 include ~/.fzf.zsh
 
 # }}}
@@ -237,3 +237,5 @@ function gitignore() {
 compdef "_files -W $GITIGNORE_DIR/" gitignore
 
 # }}}
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
